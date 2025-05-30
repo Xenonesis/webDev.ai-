@@ -1,0 +1,68 @@
+.Messages {
+  .slide-up {
+    animation: slideUp 0.6s ease-out forwards;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  // Dynamic animation delays for staggered effect
+  [data-animation-delay="0"] { animation-delay: 0ms; }
+  [data-animation-delay="1"] { animation-delay: 100ms; }
+  [data-animation-delay="2"] { animation-delay: 200ms; }
+  [data-animation-delay="3"] { animation-delay: 300ms; }
+  [data-animation-delay="4"] { animation-delay: 400ms; }
+  [data-animation-delay="5"] { animation-delay: 500ms; }
+  [data-animation-delay="6"] { animation-delay: 600ms; }
+  [data-animation-delay="7"] { animation-delay: 700ms; }
+  [data-animation-delay="8"] { animation-delay: 800ms; }
+  [data-animation-delay="9"] { animation-delay: 900ms; }
+  
+  // For messages beyond 10, use a general rule
+  [data-animation-delay] {
+    &:nth-child(n+11) {
+      animation-delay: calc(var(--animation-delay, 0) * 100ms);
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Enhanced loading spinner
+.loading-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-left: 2px solid rgba(147, 51, 234, 0.8);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Message hover effects
+.message-container {
+  transition: all 0.2s ease-out;
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(147, 51, 234, 0.15);
+  }
+}
+
+// Improved focus states for accessibility
+.message-container:focus-within {
+  outline: 2px solid rgba(147, 51, 234, 0.5);
+  outline-offset: 2px;
+}

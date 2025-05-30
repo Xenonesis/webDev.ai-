@@ -1,0 +1,292 @@
+/* Dynamic Theme System */
+:root {
+  /* Default dynamic theme variables */
+  --dynamic-gradient-direction: 135deg;
+  --dynamic-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --dynamic-accent-color: #8b5cf6;
+  --dynamic-animation-speed: 0.3s;
+  --dynamic-border-radius: 12px;
+  --dynamic-shadow-intensity: 0 8px 32px rgba(139, 92, 246, 0.15);
+  --dynamic-font-weight: 500;
+
+  /* Branding-specific variables for enhanced visibility */
+  --dynamic-branding-gradient: var(--dynamic-primary-gradient);
+  --dynamic-branding-accent: var(--dynamic-accent-color);
+  --dynamic-branding-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+  --dynamic-branding-outline: 1px solid rgba(255, 255, 255, 0.2);
+  --dynamic-branding-backdrop: rgba(0, 0, 0, 0.1);
+
+  /* Transition properties for smooth theme changes */
+  --theme-transition-duration: 2.5s;
+  --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base dynamic theme styles */
+[data-dynamic-theme] {
+  /* Smooth transitions for all dynamic properties */
+  transition: 
+    background var(--theme-transition-duration) var(--theme-transition-timing),
+    border-color var(--theme-transition-duration) var(--theme-transition-timing),
+    box-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+    color var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Enhanced background with dynamic gradients */
+[data-dynamic-theme] .bg-bolt-elements-background-depth-1 {
+  background: var(--dynamic-primary-gradient) !important;
+  background-attachment: fixed;
+  transition: background var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Dynamic accent colors for interactive elements */
+[data-dynamic-theme] .text-purple-500,
+[data-dynamic-theme] .text-purple-600,
+[data-dynamic-theme] .hover\:text-purple-500:hover,
+[data-dynamic-theme] .hover\:text-purple-400:hover {
+  color: var(--dynamic-accent-color) !important;
+  transition: color var(--dynamic-animation-speed) ease;
+}
+
+/* Dynamic border radius */
+[data-dynamic-theme] .rounded-xl,
+[data-dynamic-theme] .rounded-2xl {
+  border-radius: var(--dynamic-border-radius) !important;
+  transition: border-radius var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Dynamic shadows */
+[data-dynamic-theme] .shadow-lg,
+[data-dynamic-theme] .shadow-xl,
+[data-dynamic-theme] .hover\:shadow-xl:hover {
+  box-shadow: var(--dynamic-shadow-intensity) !important;
+  transition: box-shadow var(--dynamic-animation-speed) ease;
+}
+
+/* Dynamic font weights */
+[data-dynamic-theme] .font-bold {
+  font-weight: var(--dynamic-font-weight) !important;
+  transition: font-weight var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Enhanced gradient text for branding */
+[data-dynamic-theme] .bg-gradient-to-r {
+  background: var(--dynamic-primary-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  transition: background var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Dynamic webdev.ai branding styles */
+[data-dynamic-theme] .dynamic-branding {
+  /* Use dynamic gradient for text */
+  background: var(--dynamic-branding-gradient) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+
+  /* Enhanced visibility with text shadow and outline */
+  text-shadow: var(--dynamic-branding-shadow) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) !important;
+
+  /* Smooth transitions */
+  transition:
+    background var(--theme-transition-duration) var(--theme-transition-timing),
+    text-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+    filter var(--theme-transition-duration) var(--theme-transition-timing) !important;
+}
+
+/* Fallback for when dynamic themes are disabled */
+.dynamic-branding {
+  background: linear-gradient(135deg, #a855f7 0%, #8b5cf6 50%, #7c3aed 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.3) !important;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.2)) !important;
+  transition:
+    background var(--theme-transition-duration) var(--theme-transition-timing),
+    text-shadow var(--theme-transition-duration) var(--theme-transition-timing),
+    filter var(--theme-transition-duration) var(--theme-transition-timing) !important;
+}
+
+/* Dynamic theme-aware example prompts */
+[data-dynamic-theme] #examples button {
+  /* Enhanced background with better contrast */
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+
+  /* Explicit text color that works on all backgrounds */
+  color: rgba(255, 255, 255, 0.95) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+
+  /* Enhanced backdrop blur and shadows */
+  -webkit-backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
+
+  /* Smooth transitions */
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing) !important;
+}
+
+[data-dynamic-theme] #examples button:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  color: rgba(255, 255, 255, 1) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
+    0 0 20px var(--dynamic-accent-color)40 !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+/* Fallback for when dynamic themes are disabled - ensure text is visible */
+#examples button {
+  color: var(--bolt-elements-textPrimary) !important;
+}
+
+/* Dynamic button styles */
+[data-dynamic-theme] .bg-purple-500,
+[data-dynamic-theme] .hover\:bg-purple-600:hover {
+  background: var(--dynamic-accent-color) !important;
+  transition: background var(--dynamic-animation-speed) ease;
+}
+
+/* Dynamic border colors */
+[data-dynamic-theme] .border-purple-300,
+[data-dynamic-theme] .border-purple-500,
+[data-dynamic-theme] .hover\:border-purple-500:hover {
+  border-color: var(--dynamic-accent-color) !important;
+  transition: border-color var(--dynamic-animation-speed) ease;
+}
+
+/* Enhanced chat interface with dynamic theming */
+[data-dynamic-theme] .relative.bg-bolt-elements-background-depth-2 {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Dynamic glow effects */
+[data-dynamic-theme] .absolute.inset-0.-z-10.blur-3xl {
+  background: var(--dynamic-primary-gradient) !important;
+  opacity: 0.3 !important;
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Animated background patterns */
+[data-dynamic-theme]::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--dynamic-primary-gradient);
+  opacity: 0.05;
+  z-index: -1;
+  animation: dynamicShift 60s ease-in-out infinite;
+  transition: all var(--theme-transition-duration) var(--theme-transition-timing);
+}
+
+/* Theme-specific animations */
+@keyframes dynamicShift {
+  0%, 100% {
+    transform: translateX(0) translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateX(5px) translateY(-5px) rotate(1deg);
+  }
+  50% {
+    transform: translateX(-3px) translateY(3px) rotate(-0.5deg);
+  }
+  75% {
+    transform: translateX(2px) translateY(-2px) rotate(0.5deg);
+  }
+}
+
+/* Cosmic theme specific styles */
+[data-dynamic-theme="cosmic"] {
+  --theme-animation-duration: 8s;
+}
+
+[data-dynamic-theme="cosmic"]::before {
+  animation: cosmicFloat var(--theme-animation-duration) ease-in-out infinite;
+}
+
+@keyframes cosmicFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* Aurora theme specific styles */
+[data-dynamic-theme="aurora"] {
+  --theme-animation-duration: 12s;
+}
+
+[data-dynamic-theme="aurora"]::before {
+  animation: auroraWave var(--theme-animation-duration) ease-in-out infinite;
+}
+
+@keyframes auroraWave {
+  0%, 100% { transform: scaleX(1) scaleY(1); }
+  33% { transform: scaleX(1.05) scaleY(0.95); }
+  66% { transform: scaleX(0.95) scaleY(1.05); }
+}
+
+/* Nebula theme specific styles */
+[data-dynamic-theme="nebula"] {
+  --theme-animation-duration: 15s;
+}
+
+[data-dynamic-theme="nebula"]::before {
+  animation: nebulaSwirl var(--theme-animation-duration) linear infinite;
+}
+
+@keyframes nebulaSwirl {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1.02); }
+}
+
+/* Galaxy theme specific styles */
+[data-dynamic-theme="galaxy"] {
+  --theme-animation-duration: 6s;
+}
+
+[data-dynamic-theme="galaxy"]::before {
+  animation: galaxyPulse var(--theme-animation-duration) ease-in-out infinite;
+}
+
+@keyframes galaxyPulse {
+  0%, 100% { opacity: 0.05; transform: scale(1); }
+  50% { opacity: 0.08; transform: scale(1.01); }
+}
+
+/* Stellar theme specific styles */
+[data-dynamic-theme="stellar"] {
+  --theme-animation-duration: 10s;
+}
+
+[data-dynamic-theme="stellar"]::before {
+  animation: stellarShimmer var(--theme-animation-duration) ease-in-out infinite;
+}
+
+@keyframes stellarShimmer {
+  0%, 100% { filter: brightness(1) hue-rotate(0deg); }
+  25% { filter: brightness(1.1) hue-rotate(5deg); }
+  50% { filter: brightness(0.9) hue-rotate(-5deg); }
+  75% { filter: brightness(1.05) hue-rotate(3deg); }
+}
+
+/* Enhanced responsiveness */
+@media (prefers-reduced-motion: reduce) {
+  [data-dynamic-theme] *,
+  [data-dynamic-theme]::before {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

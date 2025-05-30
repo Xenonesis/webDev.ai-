@@ -1,0 +1,28 @@
+.xterm {
+  padding: 1.5rem;
+  background: var(--bolt-elements-terminal-backgroundColor);
+  border-radius: 0.75rem;
+  font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', Monaco, 'Inconsolata', 'Roboto Mono', 'Source Code Pro', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+
+  .xterm-viewport {
+    background: transparent !important;
+  }
+
+  .xterm-screen {
+    background: transparent !important;
+  }
+
+  .xterm-cursor-layer {
+    .xterm-cursor {
+      background: var(--purple-500) !important;
+      border: 1px solid var(--purple-400);
+    }
+  }
+
+  .xterm-selection {
+    background: var(--purple-500) !important;
+    opacity: 0.3;
+  }
+}
