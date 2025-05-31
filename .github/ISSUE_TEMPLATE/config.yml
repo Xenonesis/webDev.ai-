@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Bolt.new related issues
-    url: https://github.com/stackblitz/bolt.new/issues/new/choose
-    about: Report issues related to Bolt.new (not webdev.ai)
+  - name: WebContainer related issues
+    url: https://github.com/stackblitz/webcontainer-core/issues/new/choose
+    about: Report issues related to WebContainer (not webdev.ai)
   - name: Chat
     url: https://thinktank.ottomator.ai
     about: Ask questions and discuss with other webdev.ai users.

@@ -7,12 +7,23 @@
   "type": "module",
   "version": "1.0.0",
   "author": {
-    "name": "webdev.ai team",
-    "email": "maintainers@webdev.ai"
+    "name": "Aditya",
+    "email": "itisaddy@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Xenonesis/webDev.ai-.git"
+  },
+  "homepage": "https://webdev.ai",
+  "bugs": {
+    "url": "https://github.com/Xenonesis/webDev.ai-/issues"
   },
   "scripts": {
     "deploy": "npm run build && wrangler pages deploy",
     "build": "remix vite:build",
+    "build:optimized": "node scripts/build-optimized.js",
+    "build:analyze": "npm run build && npx vite-bundle-analyzer build/client",
+    "build:prod": "cross-env NODE_ENV=production npm run build",
     "dev": "node pre-start.cjs  && remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",
