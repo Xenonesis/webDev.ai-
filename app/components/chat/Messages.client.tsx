@@ -77,7 +77,7 @@ export const Messages = forwardRef<HTMLDivElement, MessagesProps>(
                       'mt-6': !isFirst,
                       'ml-auto max-w-[85%]': isUserMessage,
                       'mr-auto max-w-[95%]': !isUserMessage,
-                    }
+                    },
                   )}
                   data-animation-delay={index}
                 >

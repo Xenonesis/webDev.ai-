@@ -17,8 +17,8 @@ export * from './ThemeSwitch';
 
 // Loading components
 export * from './LoadingDots';
-export * from './LoadingOverlay';
-export * from './LoadingSpinner';
+export { LoadingOverlay } from './LoadingOverlay';
+export { LoadingSpinner } from './LoadingSpinner';
 
 // New components
 export * from './Breadcrumbs';

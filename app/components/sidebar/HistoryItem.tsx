@@ -71,7 +71,10 @@ export function HistoryItem({
         'group rounded-xl text-sm text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white overflow-hidden flex justify-between items-center px-4 py-3 transition-all duration-200 ease-out mx-2',
         'hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-violet-50/50 dark:hover:from-purple-500/10 dark:hover:to-violet-500/10',
         'hover:shadow-sm hover:scale-[1.02] transform',
-        { 'text-gray-900 dark:text-white bg-gradient-to-r from-purple-100/80 to-violet-100/80 dark:from-purple-500/20 dark:to-violet-500/20 shadow-sm scale-[1.02]': isActiveChat },
+        {
+          'text-gray-900 dark:text-white bg-gradient-to-r from-purple-100/80 to-violet-100/80 dark:from-purple-500/20 dark:to-violet-500/20 shadow-sm scale-[1.02]':
+            isActiveChat,
+        },
         { 'cursor-pointer': selectionMode },
       )}
       onClick={selectionMode ? handleItemClick : undefined}

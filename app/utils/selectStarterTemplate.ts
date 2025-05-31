@@ -88,21 +88,59 @@ export const selectStarterTemplate = async (options: { message: string; model: s
     provider,
     system: starterTemplateSelectionPrompt(templates),
   };
-  const response = await fetch('/api/llmcall', {
-    method: 'POST',
-    body: JSON.stringify(requestBody),
-  });
-  const respJson: { text: string } = await response.json();
-  console.log(respJson);
 
-  const { text } = respJson;
-  const selectedTemplate = parseSelectedTemplate(text);
+  try {
+    const response = await fetch('/api/llmcall', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
 
-  if (selectedTemplate) {
-    return selectedTemplate;
-  } else {
-    console.log('No template selected, using blank template');
+    if (!response.ok) {
+      console.error(`LLM API error: ${response.status} ${response.statusText}`);
 
+      // Try to parse error response
+      try {
+        const errorData = await response.json();
+        console.error('LLM API error details:', errorData);
+
+        // Show user-friendly error message
+        if (response.status === 401) {
+          throw new Error('API key is missing or invalid. Please check your provider settings.');
+        } else if (response.status === 400) {
+          throw new Error(
+            (errorData as any)?.error || 'Invalid request. Please check your model and provider settings.',
+          );
+        } else {
+          throw new Error((errorData as any)?.error || 'Failed to generate template selection');
+        }
+      } catch {
+        // If we can't parse the error response, show a generic message
+        throw new Error(`Server error (${response.status}). Please try again or check your settings.`);
+      }
+    }
+
+    const respJson: { text: string } = await response.json();
+    console.log('LLM Response:', respJson);
+
+    const { text } = respJson;
+    const selectedTemplate = parseSelectedTemplate(text);
+
+    if (selectedTemplate) {
+      return selectedTemplate;
+    } else {
+      console.log('No template selected, using blank template');
+      return {
+        template: 'blank',
+        title: '',
+      };
+    }
+  } catch (error) {
+    console.error('Error selecting starter template:', error);
+
+    // Return blank template as fallback
     return {
       template: 'blank',
       title: '',

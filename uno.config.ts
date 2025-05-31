@@ -238,7 +238,7 @@ export default defineConfig({
       },
     }),
     presetIcons({
-      warn: true,
+      warn: false, // Disable warnings for missing icons
       collections: {
         ...customIconCollection,
       },

@@ -1,9 +1,9 @@
 # Frequently Asked Questions (FAQ)
 
 <details>
-<summary><strong>What are the best models for webdev.ai?</strong></summary>
+<summary><strong>What are the best models for bolt.diy?</strong></summary>
 
-For the best experience with webdev.ai, we recommend using the following models:
+For the best experience with bolt.diy, we recommend using the following models:
 
 - **Claude 3.5 Sonnet (old)**: Best overall coder, providing excellent results across all use cases
 - **Gemini 2.0 Flash**: Exceptional speed while maintaining good performance
@@ -11,21 +11,21 @@ For the best experience with webdev.ai, we recommend using the following models:
 - **DeepSeekCoder V2 236b**: Best open source model (available through OpenRouter, DeepSeek API, or self-hosted)
 - **Qwen 2.5 Coder 32b**: Best model for self-hosting with reasonable hardware requirements
 
-**Note**: Models with less than 7b parameters typically lack the capability to properly interact with webdev.ai!
+**Note**: Models with less than 7b parameters typically lack the capability to properly interact with bolt!
 
 </details>
 
 <details>
-<summary><strong>How do I get the best results with webdev.ai?</strong></summary>
+<summary><strong>How do I get the best results with bolt.diy?</strong></summary>
 
-- **Be specific about your stack**:
-  Mention the frameworks or libraries you want to use (e.g., Astro, Tailwind, ShadCN) in your initial prompt. This ensures that webdev.ai scaffolds the project according to your preferences.
+- **Be specific about your stack**:  
+  Mention the frameworks or libraries you want to use (e.g., Astro, Tailwind, ShadCN) in your initial prompt. This ensures that bolt.diy scaffolds the project according to your preferences.
 
-- **Use the enhance prompt icon**:
+- **Use the enhance prompt icon**:  
   Before sending your prompt, click the _enhance_ icon to let the AI refine your prompt. You can edit the suggested improvements before submitting.
 
-- **Scaffold the basics first, then add features**:
-  Ensure the foundational structure of your application is in place before introducing advanced functionality. This helps webdev.ai establish a solid base to build on.
+- **Scaffold the basics first, then add features**:  
+  Ensure the foundational structure of your application is in place before introducing advanced functionality. This helps bolt.diy establish a solid base to build on.
 
 - **Batch simple instructions**:  
  Combine simple tasks into a single prompt to save time and reduce API credit consumption. For example:  
@@ -33,16 +33,16 @@ For the best experience with webdev.ai, we recommend using the following models:
 </details>
 
 <details>
-<summary><strong>How do I contribute to webdev.ai?</strong></summary>
+<summary><strong>How do I contribute to bolt.diy?</strong></summary>
 
 Check out our [Contribution Guide](CONTRIBUTING.md) for more details on how to get involved!
 
 </details>
 
 <details>
-<summary><strong>What are the future plans for webdev.ai?</strong></summary>
+<summary><strong>What are the future plans for bolt.diy?</strong></summary>
 
-Visit our [Roadmap](https://roadmap.sh/r/ottodev-roadmap-2ovzo) for the latest updates.
+Visit our [Roadmap](https://roadmap.sh/r/ottodev-roadmap-2ovzo) for the latest updates.  
 New features and improvements are on the way!
 
 </details>
@@ -50,14 +50,14 @@ New features and improvements are on the way!
 <details>
 <summary><strong>Why are there so many open issues/pull requests?</strong></summary>
 
-webdev.ai began as a small showcase project to explore editing open-source projects with local LLMs. However, it quickly grew into a massive community effort!
+bolt.diy began as a small showcase project on @ColeMedin's YouTube channel to explore editing open-source projects with local LLMs. However, it quickly grew into a massive community effort!
 
 We're forming a team of maintainers to manage demand and streamline issue resolution. The maintainers are rockstars, and we're also exploring partnerships to help the project thrive.
 
 </details>
 
 <details>
-<summary><strong>How do local LLMs compare to larger models like Claude 3.5 Sonnet for webdev.ai?</strong></summary>
+<summary><strong>How do local LLMs compare to larger models like Claude 3.5 Sonnet for bolt.diy?</strong></summary>
 
 While local LLMs are improving rapidly, larger models like GPT-4o, Claude 3.5 Sonnet, and DeepSeek Coder V2 236b still offer the best results for complex applications. Our ongoing focus is to improve prompts, agents, and the platform to better support smaller local LLMs.
 
@@ -80,7 +80,7 @@ If that doesn't work, try switching from Docker to `pnpm` or vice versa. We're a
 
 ### **Blank preview when running the app**
 
-A blank preview often occurs due to hallucinated bad code or incorrect commands.
+A blank preview often occurs due to hallucinated bad code or incorrect commands.  
 To troubleshoot:
 
 - Check the developer console for errors.
@@ -96,7 +96,7 @@ If you are getting this, you are probably on Windows. The fix is generally to up
 
 ### **"Miniflare or Wrangler errors in Windows"**
 
-You will need to make sure you have the latest version of Visual Studio C++ installed (14.40.33816), more information here https://github.com/Xenonesis/webDev.ai-/issues/19.
+You will need to make sure you have the latest version of Visual Studio C++ installed (14.40.33816), more information here https://github.com/stackblitz-labs/bolt.diy/issues/19.
 
 </details>
 

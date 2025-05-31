@@ -1,0 +1,342 @@
+/* Enhanced Accessibility Styles for webdev.ai */
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :root {
+    --bolt-elements-branding-primary: #4c1d95;
+    --bolt-elements-branding-secondary: #581c87;
+    --bolt-elements-branding-text: #000000;
+
+    /* Enhanced scrollbar contrast for high contrast mode */
+    --scrollbar-thumb-bg: rgba(76, 29, 149, 0.8);
+    --scrollbar-thumb-bg-hover: rgba(76, 29, 149, 1);
+    --scrollbar-thumb-bg-active: rgba(76, 29, 149, 1);
+    --scrollbar-thumb-border: rgba(0, 0, 0, 0.3);
+    --scrollbar-thumb-border-hover: rgba(0, 0, 0, 0.5);
+  }
+
+  :root[data-theme='dark'] {
+    --bolt-elements-branding-primary: #c4b5fd;
+    --bolt-elements-branding-secondary: #ddd6fe;
+    --bolt-elements-branding-text: #ffffff;
+
+    /* Enhanced scrollbar contrast for dark high contrast mode */
+    --scrollbar-thumb-bg: rgba(196, 181, 253, 0.8);
+    --scrollbar-thumb-bg-hover: rgba(196, 181, 253, 1);
+    --scrollbar-thumb-bg-active: rgba(196, 181, 253, 1);
+    --scrollbar-thumb-border: rgba(255, 255, 255, 0.3);
+    --scrollbar-thumb-border-hover: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Enhanced button contrast */
+  .btn, button {
+    border-width: 2px !important;
+    font-weight: 600 !important;
+  }
+
+  /* Enhanced input contrast */
+  input, textarea, select {
+    border-width: 2px !important;
+    background-color: var(--bolt-elements-bg-depth-1) !important;
+  }
+
+  /* Enhanced text contrast */
+  .dynamic-branding {
+    color: var(--bolt-elements-branding-text) !important;
+    background: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Enhanced scrollbar visibility for high contrast */
+  .modern-scrollbar, .chat-scrollbar, .code-scrollbar,
+  .settings-scrollbar, .filetree-scrollbar, .terminal-scrollbar,
+  .modern-scrollbar-thin, .modern-scrollbar-auto, .custom-scrollbar {
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb-bg) !important;
+      border: 2px solid var(--scrollbar-thumb-border) !important;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2) !important;
+
+      &:hover {
+        background: var(--scrollbar-thumb-bg-hover) !important;
+        border-color: var(--scrollbar-thumb-border-hover) !important;
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3) !important;
+      }
+
+      &:active {
+        background: var(--scrollbar-thumb-bg-active) !important;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1) !important;
+      border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Disable dynamic theme animations */
+  [data-dynamic-theme] * {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* Disable scrollbar animations for reduced motion */
+  .modern-scrollbar, .chat-scrollbar, .code-scrollbar,
+  .settings-scrollbar, .filetree-scrollbar, .terminal-scrollbar,
+  .modern-scrollbar-thin, .modern-scrollbar-auto, .custom-scrollbar {
+    &::-webkit-scrollbar-thumb {
+      transition: none !important;
+      transform: none !important;
+
+      &:hover {
+        transform: none !important;
+      }
+
+      &:active {
+        transform: none !important;
+      }
+    }
+
+    &::-webkit-scrollbar-track {
+      transition: none !important;
+    }
+  }
+}
+
+/* Focus Visible Enhancements */
+*:focus-visible {
+  outline: 3px solid var(--bolt-elements-branding-primary) !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+
+/* Enhanced keyboard navigation */
+.keyboard-navigation *:focus {
+  outline: 2px solid var(--bolt-elements-branding-primary) !important;
+  outline-offset: 1px !important;
+}
+
+/* Screen Reader Only Content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip Links */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: var(--bolt-elements-branding-primary);
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 10000;
+  font-weight: 600;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Enhanced Color Contrast Utilities */
+.text-high-contrast {
+  color: var(--bolt-elements-textPrimary) !important;
+  font-weight: 500 !important;
+}
+
+.bg-high-contrast {
+  background-color: var(--bolt-elements-bg-depth-1) !important;
+  border: 1px solid var(--bolt-elements-borderColor) !important;
+}
+
+/* ARIA Live Regions */
+.live-region {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* Enhanced Button States */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  background-color: var(--bolt-elements-bg-depth-3) !important;
+  color: var(--bolt-elements-textTertiary) !important;
+}
+
+/* Enhanced Link Visibility */
+a {
+  text-decoration-thickness: 2px !important;
+  text-underline-offset: 3px !important;
+}
+
+a:hover,
+a:focus {
+  text-decoration-thickness: 3px !important;
+}
+
+/* Enhanced Form Labels */
+label {
+  font-weight: 500 !important;
+  color: var(--bolt-elements-textPrimary) !important;
+  margin-bottom: 4px !important;
+  display: block !important;
+}
+
+/* Required Field Indicators */
+.required::after {
+  content: " *";
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* Error States */
+.error {
+  border-color: #dc2626 !important;
+  background-color: rgba(220, 38, 38, 0.05) !important;
+}
+
+.error-message {
+  color: #dc2626 !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+}
+
+/* Success States */
+.success {
+  border-color: #16a34a !important;
+  background-color: rgba(22, 163, 74, 0.05) !important;
+}
+
+.success-message {
+  color: #16a34a !important;
+  font-weight: 500 !important;
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+}
+
+/* Enhanced Modal Accessibility */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.modal-content {
+  border: 2px solid var(--bolt-elements-borderColorActive) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Enhanced Tooltip Accessibility */
+.tooltip {
+  background-color: var(--bolt-elements-bg-depth-1) !important;
+  color: var(--bolt-elements-textPrimary) !important;
+  border: 1px solid var(--bolt-elements-borderColor) !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Enhanced Table Accessibility */
+table {
+  border-collapse: collapse !important;
+}
+
+th, td {
+  border: 1px solid var(--bolt-elements-borderColor) !important;
+  padding: 8px 12px !important;
+}
+
+th {
+  background-color: var(--bolt-elements-bg-depth-2) !important;
+  font-weight: 600 !important;
+  text-align: left !important;
+}
+
+/* Enhanced List Accessibility */
+ul, ol {
+  padding-left: 1.5rem !important;
+}
+
+li {
+  margin-bottom: 0.25rem !important;
+}
+
+/* Enhanced Code Block Accessibility */
+pre, code {
+  background-color: var(--bolt-elements-code-background) !important;
+  color: var(--bolt-elements-code-text) !important;
+  border: 1px solid var(--bolt-elements-borderColor) !important;
+  border-radius: 4px !important;
+}
+
+pre {
+  padding: 1rem !important;
+  overflow-x: auto !important;
+}
+
+code {
+  padding: 0.125rem 0.25rem !important;
+  font-size: 0.875em !important;
+}
+
+/* Enhanced Progress Indicators */
+.progress-bar {
+  background-color: var(--bolt-elements-bg-depth-3) !important;
+  border-radius: 9999px !important;
+  overflow: hidden !important;
+  height: 8px !important;
+}
+
+.progress-fill {
+  background-color: var(--bolt-elements-branding-primary) !important;
+  height: 100% !important;
+  transition: width 0.3s ease !important;
+}
+
+/* Enhanced Loading States */
+.loading {
+  opacity: 0.7 !important;
+  pointer-events: none !important;
+}
+
+.spinner {
+  border: 2px solid var(--bolt-elements-bg-depth-3) !important;
+  border-top: 2px solid var(--bolt-elements-branding-primary) !important;
+  border-radius: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

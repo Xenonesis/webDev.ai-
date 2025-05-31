@@ -78,19 +78,34 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         },
       });
     } catch (error: unknown) {
-      console.log(error);
+      console.error('LLM Stream Error:', error);
+      logger.error('LLM Stream Error:', error);
 
-      if (error instanceof Error && error.message?.includes('API key')) {
-        throw new Response('Invalid or missing API key', {
-          status: 401,
-          statusText: 'Unauthorized',
-        });
+      let errorMessage = 'Internal Server Error';
+      let statusCode = 500;
+
+      if (error instanceof Error) {
+        if (error.message?.includes('API key')) {
+          errorMessage = 'Invalid or missing API key';
+          statusCode = 401;
+        } else {
+          errorMessage = error.message || 'Internal Server Error';
+        }
       }
 
-      throw new Response(null, {
-        status: 500,
-        statusText: 'Internal Server Error',
-      });
+      return new Response(
+        JSON.stringify({
+          error: errorMessage,
+          details: error instanceof Error ? error.message : 'Unknown error',
+        }),
+        {
+          status: statusCode,
+          statusText: errorMessage,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
     }
   } else {
     try {
@@ -137,19 +152,43 @@ async function llmCallAction({ context, request }: ActionFunctionArgs) {
         },
       });
     } catch (error: unknown) {
-      console.log(error);
+      console.error('LLM Call Error:', error);
+      logger.error('LLM Call Error:', error);
 
-      if (error instanceof Error && error.message?.includes('API key')) {
-        throw new Response('Invalid or missing API key', {
-          status: 401,
-          statusText: 'Unauthorized',
-        });
+      let errorMessage = 'Internal Server Error';
+      let statusCode = 500;
+
+      if (error instanceof Error) {
+        if (error.message?.includes('API key')) {
+          errorMessage = 'Invalid or missing API key';
+          statusCode = 401;
+        } else if (error.message?.includes('Model not found')) {
+          errorMessage = 'Model not found';
+          statusCode = 400;
+        } else if (error.message?.includes('Provider not found')) {
+          errorMessage = 'Provider not found';
+          statusCode = 400;
+        } else if (error.message?.includes('No models found')) {
+          errorMessage = 'No models available for the selected provider';
+          statusCode = 400;
+        } else {
+          errorMessage = error.message || 'Internal Server Error';
+        }
       }
 
-      throw new Response(null, {
-        status: 500,
-        statusText: 'Internal Server Error',
-      });
+      return new Response(
+        JSON.stringify({
+          error: errorMessage,
+          details: error instanceof Error ? error.message : 'Unknown error',
+        }),
+        {
+          status: statusCode,
+          statusText: errorMessage,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
     }
   }
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useStore } from '@nanostores/react';
+
 import { useDynamicTheme } from '~/lib/hooks/useDynamicTheme';
-import { toggleDynamicTheme, dynamicThemeEnabledStore } from '~/lib/stores/theme';
+import { toggleDynamicTheme } from '~/lib/stores/theme';
 import { classNames } from '~/utils/classNames';
 
 export function DynamicThemeIndicator() {
@@ -45,7 +45,7 @@ export function DynamicThemeIndicator() {
             'bg-white/10 backdrop-blur-md border border-white/20',
             'text-white text-sm font-medium',
             'hover:bg-white/20 transition-all duration-300',
-            'shadow-lg hover:shadow-xl'
+            'shadow-lg hover:shadow-xl',
           )}
           title="Enable Dynamic Themes"
         >
@@ -57,11 +57,7 @@ export function DynamicThemeIndicator() {
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-6 right-6 z-50"
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="fixed bottom-6 right-6 z-50">
       <div className="flex flex-col items-end gap-2">
         {/* Expanded Theme Selector */}
         <AnimatePresence>
@@ -73,7 +69,7 @@ export function DynamicThemeIndicator() {
               className={classNames(
                 'flex flex-col gap-2 p-3 rounded-xl',
                 'bg-white/10 backdrop-blur-md border border-white/20',
-                'shadow-xl'
+                'shadow-xl',
               )}
             >
               <div className="text-xs text-white/80 font-medium mb-1">Select Theme</div>
@@ -88,7 +84,7 @@ export function DynamicThemeIndicator() {
                       'transition-all duration-200',
                       currentTheme === theme
                         ? 'bg-white/20 text-white border border-white/30'
-                        : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
+                        : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white',
                     )}
                   >
                     <div
@@ -101,7 +97,7 @@ export function DynamicThemeIndicator() {
                   </button>
                 ))}
               </div>
-              
+
               {/* Controls */}
               <div className="flex gap-2 mt-2">
                 <button
@@ -119,7 +115,7 @@ export function DynamicThemeIndicator() {
                     'flex-1 py-1 px-2 text-xs rounded-md transition-colors',
                     isPaused
                       ? 'bg-green-500/20 hover:bg-green-500/30 text-green-300'
-                      : 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300'
+                      : 'bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300',
                   )}
                   title={isPaused ? 'Resume Auto-Cycle' : 'Pause Auto-Cycle'}
                 >
@@ -134,7 +130,7 @@ export function DynamicThemeIndicator() {
                   →
                 </button>
               </div>
-              
+
               <button
                 type="button"
                 onClick={toggleDynamicTheme}
@@ -156,7 +152,7 @@ export function DynamicThemeIndicator() {
             'text-white text-sm font-medium',
             'hover:bg-white/20 transition-all duration-300',
             'shadow-lg hover:shadow-xl',
-            isExpanded && 'bg-white/20'
+            isExpanded ? 'bg-white/20' : '',
           )}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -169,22 +165,11 @@ export function DynamicThemeIndicator() {
                 background: themes[currentTheme].primaryGradient,
               }}
             />
-            
+
             {/* Progress Ring */}
             {!isPaused && (
-              <svg
-                className="absolute inset-0 w-4 h-4 -rotate-90"
-                viewBox="0 0 16 16"
-              >
-                <circle
-                  cx="8"
-                  cy="8"
-                  r="6"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="1"
-                  strokeOpacity="0.3"
-                />
+              <svg className="absolute inset-0 w-4 h-4 -rotate-90" viewBox="0 0 16 16">
+                <circle cx="8" cy="8" r="6" fill="none" stroke="white" strokeWidth="1" strokeOpacity="0.3" />
                 <circle
                   cx="8"
                   cy="8"
@@ -204,13 +189,9 @@ export function DynamicThemeIndicator() {
           <div className="flex flex-col items-start">
             <div className="flex items-center gap-2">
               <span className="font-semibold">{themes[currentTheme].name}</span>
-              {isPaused && (
-                <span className="text-xs text-yellow-300">⏸</span>
-              )}
+              {isPaused && <span className="text-xs text-yellow-300">⏸</span>}
             </div>
-            <div className="text-xs text-white/70">
-              {isPaused ? 'Paused' : formatTime(timeRemaining)}
-            </div>
+            <div className="text-xs text-white/70">{isPaused ? 'Paused' : formatTime(timeRemaining)}</div>
           </div>
 
           {/* Expand/Collapse Icon */}

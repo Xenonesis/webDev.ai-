@@ -16,6 +16,12 @@
   --dynamic-branding-outline: 1px solid rgba(255, 255, 255, 0.2);
   --dynamic-branding-backdrop: rgba(0, 0, 0, 0.1);
 
+  /* Dynamic scrollbar variables */
+  --dynamic-scrollbar-thumb: rgba(139, 92, 246, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(139, 92, 246, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(139, 92, 246, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+
   /* Transition properties for smooth theme changes */
   --theme-transition-duration: 2.5s;
   --theme-transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
@@ -76,23 +82,62 @@
   transition: background var(--theme-transition-duration) var(--theme-transition-timing);
 }
 
-/* Dynamic webdev.ai branding styles */
-[data-dynamic-theme] .dynamic-branding {
-  /* Use dynamic gradient for text */
-  background: var(--dynamic-branding-gradient) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
+/* Enhanced webdev.ai branding styles with better visibility */
+.dynamic-branding {
+  /* Base styling for all themes */
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  position: relative;
+  display: inline-block;
 
-  /* Enhanced visibility with text shadow and outline */
-  text-shadow: var(--dynamic-branding-shadow) !important;
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) !important;
+  /* Fallback colors for better accessibility */
+  color: var(--bolt-elements-branding-text);
+  text-shadow: var(--bolt-elements-branding-shadow);
 
   /* Smooth transitions */
-  transition:
-    background var(--theme-transition-duration) var(--theme-transition-timing),
-    text-shadow var(--theme-transition-duration) var(--theme-transition-timing),
-    filter var(--theme-transition-duration) var(--theme-transition-timing) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Dynamic theme enhanced branding */
+[data-dynamic-theme] .dynamic-branding {
+  /* Use dynamic gradient for text with fallback */
+  background: var(--dynamic-branding-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* Enhanced visibility with multiple shadow layers */
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.5),
+    0 2px 4px rgba(0, 0, 0, 0.3),
+    var(--dynamic-branding-shadow);
+
+  /* Additional glow effect */
+  filter:
+    drop-shadow(0 0 8px rgba(255, 255, 255, 0.3))
+    drop-shadow(0 0 16px var(--dynamic-accent-color)40);
+
+  /* Hover effects for better interactivity */
+  &:hover {
+    transform: scale(1.02);
+    filter:
+      drop-shadow(0 0 12px rgba(255, 255, 255, 0.4))
+      drop-shadow(0 0 24px var(--dynamic-accent-color)60);
+  }
+}
+
+/* Ensure branding is visible when dynamic themes are disabled */
+:not([data-dynamic-theme]) .dynamic-branding {
+  background: linear-gradient(135deg, var(--bolt-elements-branding-primary), var(--bolt-elements-branding-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  /* Fallback for browsers that don't support background-clip */
+  @supports not (-webkit-background-clip: text) {
+    color: var(--bolt-elements-branding-text);
+    background: none;
+  }
 }
 
 /* Fallback for when dynamic themes are disabled */
@@ -109,42 +154,52 @@
     filter var(--theme-transition-duration) var(--theme-transition-timing) !important;
 }
 
-/* Dynamic theme-aware example prompts */
-[data-dynamic-theme] #examples button {
-  /* Enhanced background with better contrast */
-  background: rgba(255, 255, 255, 0.15) !important;
-  border: 1px solid rgba(255, 255, 255, 0.25) !important;
-
-  /* Explicit text color that works on all backgrounds */
+/* Enhanced example prompts with better visibility */
+#examples button {
+  /* Base styling for all themes */
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
   color: rgba(255, 255, 255, 0.95) !important;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4) !important;
+  font-weight: 500 !important;
 
   /* Enhanced backdrop blur and shadows */
-  -webkit-backdrop-filter: blur(20px) !important;
-  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  backdrop-filter: blur(16px) !important;
   box-shadow:
-    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.15),
     0 0 0 1px rgba(255, 255, 255, 0.1) inset !important;
 
   /* Smooth transitions */
-  transition: all var(--theme-transition-duration) var(--theme-transition-timing) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-[data-dynamic-theme] #examples button:hover {
-  background: rgba(255, 255, 255, 0.25) !important;
-  border-color: rgba(255, 255, 255, 0.4) !important;
+#examples button:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-color: rgba(255, 255, 255, 0.35) !important;
   color: rgba(255, 255, 255, 1) !important;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6) !important;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-    0 0 20px var(--dynamic-accent-color)40 !important;
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+    0 0 24px rgba(139, 92, 246, 0.3) !important;
   transform: translateY(-2px) scale(1.02) !important;
 }
 
-/* Fallback for when dynamic themes are disabled - ensure text is visible */
-#examples button {
-  color: var(--bolt-elements-textPrimary) !important;
+/* Dynamic theme enhanced example prompts */
+[data-dynamic-theme] #examples button {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 0 16px var(--dynamic-accent-color)30 !important;
+}
+
+[data-dynamic-theme] #examples button:hover {
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.15) inset,
+    0 0 32px var(--dynamic-accent-color)50 !important;
 }
 
 /* Dynamic button styles */
@@ -237,18 +292,72 @@
   66% { transform: scaleX(0.95) scaleY(1.05); }
 }
 
-/* Nebula theme specific styles */
+/* Waves theme specific styles (formerly Nebula) */
 [data-dynamic-theme="nebula"] {
-  --theme-animation-duration: 15s;
+  --theme-animation-duration: 20s;
+
+  /* Enhanced branding visibility for waves theme */
+  --dynamic-branding-gradient: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
+  --dynamic-branding-shadow: 0 0 30px rgba(168, 85, 247, 0.5), 0 0 60px rgba(139, 92, 246, 0.3);
+  --dynamic-branding-outline: 2px solid rgba(255, 255, 255, 0.3);
+  --dynamic-branding-backdrop: rgba(0, 0, 0, 0.2);
+}
+
+/* Enhanced branding visibility for waves theme */
+[data-dynamic-theme="nebula"] .dynamic-branding {
+  /* Multiple text shadows for better visibility */
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(168, 85, 247, 0.6),
+    0 0 30px rgba(139, 92, 246, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3) !important;
+
+  /* Enhanced outline for better definition */
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
+
+  /* Stronger gradient with better contrast */
+  background: linear-gradient(135deg,
+    #ffffff 0%,
+    #f8fafc 25%,
+    #e2e8f0 50%,
+    #cbd5e1 75%,
+    #94a3b8 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+
+  /* Fallback for better accessibility */
+  @supports not (-webkit-background-clip: text) {
+    color: #ffffff !important;
+    background: none !important;
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.8),
+      0 0 20px rgba(168, 85, 247, 0.6),
+      0 2px 4px rgba(0, 0, 0, 0.5) !important;
+  }
 }
 
 [data-dynamic-theme="nebula"]::before {
-  animation: nebulaSwirl var(--theme-animation-duration) linear infinite;
+  animation: wavesFlow var(--theme-animation-duration) ease-in-out infinite;
 }
 
-@keyframes nebulaSwirl {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1.02); }
+@keyframes wavesFlow {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateX(10px) translateY(-5px) scale(1.02);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateX(-5px) translateY(-10px) scale(0.98);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translateX(-10px) translateY(5px) scale(1.01);
+    opacity: 0.9;
+  }
 }
 
 /* Galaxy theme specific styles */
@@ -289,4 +398,64 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Dynamic Theme Scrollbar Integration */
+[data-dynamic-theme] {
+  .modern-scrollbar, .chat-scrollbar, .settings-scrollbar, .filetree-scrollbar {
+    &::-webkit-scrollbar-thumb {
+      background: var(--dynamic-scrollbar-thumb) !important;
+      box-shadow: var(--dynamic-scrollbar-shadow) !important;
+      transition: all var(--dynamic-animation-speed) ease !important;
+
+      &:hover {
+        background: var(--dynamic-scrollbar-thumb-hover) !important;
+        box-shadow: 0 4px 12px var(--dynamic-scrollbar-thumb) !important;
+      }
+
+      &:active {
+        background: var(--dynamic-scrollbar-thumb-active) !important;
+      }
+    }
+  }
+}
+
+/* Cosmic theme scrollbars */
+[data-dynamic-theme="cosmic"] {
+  --dynamic-scrollbar-thumb: rgba(102, 126, 234, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(102, 126, 234, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(102, 126, 234, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+/* Aurora theme scrollbars */
+[data-dynamic-theme="aurora"] {
+  --dynamic-scrollbar-thumb: rgba(168, 85, 247, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(168, 85, 247, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(168, 85, 247, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(168, 85, 247, 0.2);
+}
+
+/* Waves theme scrollbars */
+[data-dynamic-theme="nebula"] {
+  --dynamic-scrollbar-thumb: rgba(139, 92, 246, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(139, 92, 246, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(139, 92, 246, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+}
+
+/* Galaxy theme scrollbars */
+[data-dynamic-theme="galaxy"] {
+  --dynamic-scrollbar-thumb: rgba(217, 70, 239, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(217, 70, 239, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(217, 70, 239, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(217, 70, 239, 0.2);
+}
+
+/* Stellar theme scrollbars */
+[data-dynamic-theme="stellar"] {
+  --dynamic-scrollbar-thumb: rgba(245, 158, 11, 0.4);
+  --dynamic-scrollbar-thumb-hover: rgba(245, 158, 11, 0.6);
+  --dynamic-scrollbar-thumb-active: rgba(245, 158, 11, 0.8);
+  --dynamic-scrollbar-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
 }

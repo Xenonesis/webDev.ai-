@@ -44,6 +44,7 @@ export function useDynamicTheme() {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
     }
+
     if (countdownRef.current) {
       clearInterval(countdownRef.current);
     }
@@ -71,6 +72,7 @@ export function useDynamicTheme() {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+
     if (countdownRef.current) {
       clearInterval(countdownRef.current);
       countdownRef.current = null;
@@ -95,6 +97,7 @@ export function useDynamicTheme() {
       applyDynamicTheme(currentTheme);
     } else {
       stopCycling();
+
       if (!isEnabled) {
         removeDynamicTheme();
       }

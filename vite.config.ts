@@ -96,112 +96,98 @@ export default defineConfig((config) => {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: {
+          manualChunks: (id) => {
             // Core React and framework
-            'react-vendor': ['react', 'react-dom', '@remix-run/react'],
+            if (id.includes('react') || id.includes('@remix-run')) {
+              return 'react-vendor';
+            }
+
+            // Syntax highlighting languages - split by language groups
+            if (id.includes('shiki') || id.includes('@shikijs')) {
+              if (id.includes('emacs-lisp') || id.includes('lisp')) {
+                return 'lang-lisp';
+              }
+              if (id.includes('cpp') || id.includes('c++') || id.includes('objective-c')) {
+                return 'lang-cpp';
+              }
+              if (id.includes('wasm') || id.includes('webassembly')) {
+                return 'lang-wasm';
+              }
+              if (id.includes('javascript') || id.includes('typescript') || id.includes('jsx') || id.includes('tsx')) {
+                return 'lang-js';
+              }
+              if (id.includes('python') || id.includes('ruby') || id.includes('php')) {
+                return 'lang-dynamic';
+              }
+              if (id.includes('html') || id.includes('css') || id.includes('scss') || id.includes('less')) {
+                return 'lang-web';
+              }
+              return 'lang-other';
+            }
 
             // UI Libraries
-            'ui-vendor': [
-              '@radix-ui/react-dialog',
-              '@radix-ui/react-tooltip',
-              '@radix-ui/react-select',
-              '@headlessui/react',
-              'framer-motion',
-              'lucide-react',
-              '@heroicons/react'
-            ],
+            if (id.includes('@radix-ui') || id.includes('@headlessui') || id.includes('framer-motion')) {
+              return 'ui-vendor';
+            }
 
-            // Code Editor and Syntax Highlighting
-            'editor-vendor': [
-              '@codemirror/state',
-              '@codemirror/view',
-              '@codemirror/lang-javascript',
-              '@codemirror/lang-typescript',
-              '@codemirror/lang-html',
-              '@codemirror/lang-css',
-              '@codemirror/lang-json',
-              '@uiw/codemirror-theme-vscode'
-            ],
+            // Code Editor
+            if (id.includes('@codemirror') || id.includes('@uiw/codemirror')) {
+              return 'editor-vendor';
+            }
 
             // AI and LLM providers
-            'ai-vendor': [
-              '@ai-sdk/provider',
-              '@ai-sdk/provider-utils',
-              '@google/generative-ai',
-              '@anthropic-ai/sdk',
-              'openai'
-            ],
+            if (id.includes('@ai-sdk') || id.includes('@google/generative-ai') || id.includes('@anthropic-ai') || id.includes('openai')) {
+              return 'ai-vendor';
+            }
 
-            // WebContainer and Development Tools
-            'webcontainer-vendor': [
-              '@webcontainer/api'
-            ],
-
-            // Utilities and Data Processing
-            'utils-vendor': [
-              'date-fns',
-              'zustand',
-              'nanostores',
-              'react-dnd',
-              'react-dnd-html5-backend',
-              'dompurify',
-              'marked',
-              'shiki'
-            ],
+            // WebContainer
+            if (id.includes('@webcontainer')) {
+              return 'webcontainer-vendor';
+            }
 
             // AWS and Cloud Services
-            'cloud-vendor': [
-              '@aws-sdk/client-bedrock-runtime',
-              '@octokit/rest'
-            ]
-          },
+            if (id.includes('@aws-sdk') || id.includes('@octokit')) {
+              return 'cloud-vendor';
+            }
 
-          // Optimize chunk naming
-          chunkFileNames: (chunkInfo) => {
-            const facadeModuleId = chunkInfo.facadeModuleId ? chunkInfo.facadeModuleId.split('/').pop() : 'chunk';
-            return `assets/[name]-[hash].js`;
-          },
+            // Large utilities
+            if (id.includes('html2canvas') || id.includes('jspdf') || id.includes('marked') || id.includes('dompurify')) {
+              return 'utils-heavy';
+            }
 
-          // Optimize asset naming
-          assetFileNames: (assetInfo) => {
-            const info = assetInfo.name.split('.');
-            const ext = info[info.length - 1];
-            if (/\.(css)$/.test(assetInfo.name)) {
-              return `assets/css/[name]-[hash].${ext}`;
+            // Other utilities
+            if (id.includes('date-fns') || id.includes('zustand') || id.includes('nanostores')) {
+              return 'utils-vendor';
             }
-            if (/\.(png|jpe?g|svg|gif|tiff|bmp|ico)$/i.test(assetInfo.name)) {
-              return `assets/images/[name]-[hash].${ext}`;
+
+            // Icons
+            if (id.includes('lucide-react') || id.includes('@heroicons')) {
+              return 'icons-vendor';
             }
-            if (/\.(woff2?|eot|ttf|otf)$/i.test(assetInfo.name)) {
-              return `assets/fonts/[name]-[hash].${ext}`;
+
+            // Node modules that are large
+            if (id.includes('node_modules')) {
+              return 'vendor';
             }
-            return `assets/[name]-[hash].${ext}`;
-          }
+          },
         },
-
-        // External dependencies for better caching
         external: (id) => {
-          // Don't externalize anything for now, but this can be used for CDN optimization
+          // Externalize problematic polyfill imports
+          if (id.includes('vite-plugin-node-polyfills/shims/')) {
+            return true;
+          }
           return false;
         }
       },
-
-      // Enable source maps for production debugging (optional)
       sourcemap: false,
-
-      // Optimize minification
       minify: 'esbuild',
-
-      // Enable CSS code splitting
       cssCodeSplit: true,
-
-      // Optimize asset inlining
       assetsInlineLimit: 4096,
-
-      // Enable module preload polyfill
-      modulePreload: {
-        polyfill: true
-      }
+    },
+    resolve: {
+      alias: {
+        buffer: 'buffer',
+      },
     },
     plugins: [
       nodePolyfills({
@@ -211,8 +197,9 @@ export default defineConfig((config) => {
           process: true,
           global: true,
         },
-        protocolImports: true,
+        protocolImports: false, // Disable protocol imports to avoid the buffer shim issue
         exclude: ['child_process', 'fs', 'path'],
+
       }),
       {
         name: 'buffer-polyfill',
@@ -240,6 +227,32 @@ export default defineConfig((config) => {
       tsconfigPaths(),
       chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
+
+      // Performance optimization plugin
+      {
+        name: 'performance-optimization',
+        generateBundle(options, bundle) {
+          // Log bundle analysis in production
+          if (config.mode === 'production') {
+            const chunks = Object.values(bundle).filter(chunk => chunk.type === 'chunk');
+            const totalSize = chunks.reduce((acc, chunk) => acc + (chunk.code?.length || 0), 0);
+            console.log(`📦 Total bundle size: ${(totalSize / 1024 / 1024).toFixed(2)}MB`);
+
+            // Log largest chunks
+            const largeChunks = chunks
+              .filter(chunk => (chunk.code?.length || 0) > 500 * 1024)
+              .sort((a, b) => (b.code?.length || 0) - (a.code?.length || 0));
+
+            if (largeChunks.length > 0) {
+              console.log('⚠️  Large chunks detected:');
+              largeChunks.forEach(chunk => {
+                const size = ((chunk.code?.length || 0) / 1024).toFixed(2);
+                console.log(`   ${chunk.fileName}: ${size}KB`);
+              });
+            }
+          }
+        }
+      },
     ],
     envPrefix: [
       'VITE_',

@@ -67,7 +67,7 @@ export function Toast({ title, message, type = 'info', isVisible, onClose, actio
           className={classNames(
             'relative flex items-start gap-3 p-4 rounded-xl border shadow-lg backdrop-blur-sm',
             'max-w-md w-full',
-            styles.bg
+            styles.bg,
           )}
         >
           {/* Icon */}
@@ -75,22 +75,16 @@ export function Toast({ title, message, type = 'info', isVisible, onClose, actio
 
           {/* Content */}
           <div className="flex-1 min-w-0">
-            {title && (
-              <h4 className={classNames('text-sm font-medium mb-1', styles.text)}>
-                {title}
-              </h4>
-            )}
-            <p className={classNames('text-sm', styles.text, !title && 'font-medium')}>
-              {message}
-            </p>
-            
+            {title && <h4 className={classNames('text-sm font-medium mb-1', styles.text)}>{title}</h4>}
+            <p className={classNames('text-sm', styles.text, !title ? 'font-medium' : '')}>{message}</p>
+
             {action && (
               <button
                 type="button"
                 onClick={action.onClick}
                 className={classNames(
                   'mt-2 text-sm font-medium underline hover:no-underline transition-all',
-                  styles.text
+                  styles.text,
                 )}
               >
                 {action.label}
@@ -105,7 +99,7 @@ export function Toast({ title, message, type = 'info', isVisible, onClose, actio
             aria-label="Close notification"
             className={classNames(
               'flex-shrink-0 w-5 h-5 rounded-full hover:bg-black/10 dark:hover:bg-white/10 transition-colors',
-              'flex items-center justify-center'
+              'flex items-center justify-center',
             )}
           >
             <div className="i-ph:x w-3 h-3 opacity-60 hover:opacity-100" />
@@ -164,6 +158,7 @@ export function useToast() {
       onClose: () => removeToast(id),
     };
     setToasts((prev) => [...prev, newToast]);
+
     return id;
   }, []);
 
@@ -171,21 +166,33 @@ export function useToast() {
     setToasts((prev) => prev.filter((toast) => toast.id !== id));
   }, []);
 
-  const success = React.useCallback((message: string, options?: Partial<ToastProps>) => {
-    return addToast({ ...options, message, type: 'success' });
-  }, [addToast]);
+  const success = React.useCallback(
+    (message: string, options?: Partial<ToastProps>) => {
+      return addToast({ ...options, message, type: 'success' });
+    },
+    [addToast],
+  );
 
-  const error = React.useCallback((message: string, options?: Partial<ToastProps>) => {
-    return addToast({ ...options, message, type: 'error' });
-  }, [addToast]);
+  const error = React.useCallback(
+    (message: string, options?: Partial<ToastProps>) => {
+      return addToast({ ...options, message, type: 'error' });
+    },
+    [addToast],
+  );
 
-  const warning = React.useCallback((message: string, options?: Partial<ToastProps>) => {
-    return addToast({ ...options, message, type: 'warning' });
-  }, [addToast]);
+  const warning = React.useCallback(
+    (message: string, options?: Partial<ToastProps>) => {
+      return addToast({ ...options, message, type: 'warning' });
+    },
+    [addToast],
+  );
 
-  const info = React.useCallback((message: string, options?: Partial<ToastProps>) => {
-    return addToast({ ...options, message, type: 'info' });
-  }, [addToast]);
+  const info = React.useCallback(
+    (message: string, options?: Partial<ToastProps>) => {
+      return addToast({ ...options, message, type: 'info' });
+    },
+    [addToast],
+  );
 
   return {
     toasts,

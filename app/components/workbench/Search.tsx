@@ -193,7 +193,7 @@ export function Search() {
       </div>
 
       {/* Results */}
-      <div className="flex-1 overflow-auto py-2">
+      <div className="flex-1 overflow-auto py-2 modern-scrollbar">
         {isSearching && (
           <div className="flex items-center justify-center h-32 text-bolt-elements-textTertiary">
             <div className="i-ph:circle-notch animate-spin mr-2" /> Searching...

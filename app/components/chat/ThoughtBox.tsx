@@ -8,14 +8,15 @@ const ThoughtBox = ({ title, children }: PropsWithChildren<{ title: string }>) =
       onClick={() => setIsExpanded(!isExpanded)}
       className={`
         bg-bolt-elements-background-depth-2
-        shadow-md 
-        rounded-lg 
-        cursor-pointer 
-        transition-all 
+        shadow-md
+        rounded-lg
+        cursor-pointer
+        transition-all
         duration-300
         ${isExpanded ? 'max-h-96' : 'max-h-13'}
         overflow-auto
         border border-bolt-elements-borderColor
+        modern-scrollbar-thin
       `}
     >
       <div className="p-4 flex items-center gap-4 rounded-lg  text-bolt-elements-textSecondary font-medium leading-5 text-sm  border border-bolt-elements-borderColor">

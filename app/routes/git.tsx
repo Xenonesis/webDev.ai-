@@ -9,7 +9,10 @@ import BackgroundRays from '~/components/ui/BackgroundRays';
 export const meta: MetaFunction = () => {
   return [
     { title: 'webdev.ai - Import Git Repository' },
-    { name: 'description', content: 'Import and work with Git repositories using webdev.ai - AI-powered web development assistant' }
+    {
+      name: 'description',
+      content: 'Import and work with Git repositories using webdev.ai - AI-powered web development assistant',
+    },
   ];
 };
 

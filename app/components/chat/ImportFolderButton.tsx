@@ -122,10 +122,7 @@ export const ImportFolderButton: React.FC<ImportFolderButtonProps> = ({ classNam
         title="Import Folder"
         variant="outline"
         size="lg"
-        className={classNames(
-          'group',
-          className,
-        )}
+        className={classNames('group', className)}
         disabled={isLoading}
       >
         <span className="i-ph:folder-open w-5 h-5 group-hover:scale-110 transition-transform duration-200" />

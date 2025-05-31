@@ -51,40 +51,75 @@ export async function loader({
     };
   };
 }): Promise<Response> {
-  const llmManager = LLMManager.getInstance(context.cloudflare?.env);
+  try {
+    console.log('Models API called with params:', params);
 
-  // Get client side maintained API keys and provider settings from cookies
-  const cookieHeader = request.headers.get('Cookie');
-  const apiKeys = getApiKeysFromCookie(cookieHeader);
-  const providerSettings = getProviderSettingsFromCookie(cookieHeader);
+    const llmManager = LLMManager.getInstance(context.cloudflare?.env);
 
-  const { providers, defaultProvider } = getProviderInfo(llmManager);
+    // Get client side maintained API keys and provider settings from cookies
+    const cookieHeader = request.headers.get('Cookie');
+    const apiKeys = getApiKeysFromCookie(cookieHeader);
+    const providerSettings = getProviderSettingsFromCookie(cookieHeader);
 
-  let modelList: ModelInfo[] = [];
+    const { providers, defaultProvider } = getProviderInfo(llmManager);
 
-  if (params.provider) {
-    // Only update models for the specific provider
-    const provider = llmManager.getProvider(params.provider);
+    let modelList: ModelInfo[] = [];
 
-    if (provider) {
-      modelList = await llmManager.getModelListFromProvider(provider, {
+    if (params.provider) {
+      // Only update models for the specific provider
+      const provider = llmManager.getProvider(params.provider);
+
+      if (provider) {
+        modelList = await llmManager.getModelListFromProvider(provider, {
+          apiKeys,
+          providerSettings,
+          serverEnv: context.cloudflare?.env,
+        });
+      }
+    } else {
+      // Update all models
+      modelList = await llmManager.updateModelList({
         apiKeys,
         providerSettings,
         serverEnv: context.cloudflare?.env,
       });
     }
-  } else {
-    // Update all models
-    modelList = await llmManager.updateModelList({
-      apiKeys,
-      providerSettings,
-      serverEnv: context.cloudflare?.env,
-    });
-  }
 
-  return json<ModelsResponse>({
-    modelList,
-    providers,
-    defaultProvider,
-  });
+    console.log('Models API completed successfully, returning', modelList.length, 'models');
+
+    return json<ModelsResponse>({
+      modelList,
+      providers,
+      defaultProvider,
+    });
+  } catch (error) {
+    console.error('Models API error:', error);
+    console.error('Error details:', error instanceof Error ? error.stack : error);
+
+    // Return a fallback response with empty models but valid providers
+    try {
+      const llmManager = LLMManager.getInstance(context.cloudflare?.env);
+      const { providers, defaultProvider } = getProviderInfo(llmManager);
+
+      return json<ModelsResponse>({
+        modelList: [],
+        providers,
+        defaultProvider,
+      });
+    } catch (fallbackError) {
+      console.error('Fallback error in models API:', fallbackError);
+      return new Response(
+        JSON.stringify({
+          error: 'Failed to load models',
+          details: error instanceof Error ? error.message : 'Unknown error',
+        }),
+        {
+          status: 500,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+    }
+  }
 }

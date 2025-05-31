@@ -1,0 +1,1 @@
+export { WavesBackground } from './WavesBackground';

@@ -388,7 +388,7 @@ export const Workbench = memo(
                   <Slider selected={selectedView} options={sliderOptions} setSelected={setSelectedView} />
                   <div className="ml-auto" />
                   {selectedView === 'code' && (
-                    <div className="flex overflow-y-auto">
+                    <div className="flex overflow-y-auto modern-scrollbar-thin">
                       <PanelHeaderButton
                         className="mr-1 text-sm"
                         onClick={() => {

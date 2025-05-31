@@ -12,6 +12,7 @@ import { ClientOnly } from 'remix-utils/client-only';
 
 import reactToastifyStyles from 'react-toastify/dist/ReactToastify.css?url';
 import globalStyles from './styles/index.scss?url';
+import accessibilityStyles from './styles/accessibility.scss?url';
 import xtermStyles from '@xterm/xterm/css/xterm.css?url';
 
 import 'virtual:uno.css';
@@ -25,6 +26,7 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: reactToastifyStyles },
   { rel: 'stylesheet', href: tailwindReset },
   { rel: 'stylesheet', href: globalStyles },
+  { rel: 'stylesheet', href: accessibilityStyles },
   { rel: 'stylesheet', href: xtermStyles },
   {
     rel: 'preconnect',
@@ -82,12 +84,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 import { logStore } from './lib/stores/logs';
-import {
-  dynamicThemeStore,
-  dynamicThemeEnabledStore,
-  applyDynamicTheme,
-  removeDynamicTheme
-} from './lib/stores/theme';
+import { dynamicThemeStore, dynamicThemeEnabledStore, applyDynamicTheme, removeDynamicTheme } from './lib/stores/theme';
+import { performanceMonitor } from './utils/performance-monitor';
+import { preloadCommonLanguages } from './utils/syntax-highlighting';
 
 export default function App() {
   const theme = useStore(themeStore);
@@ -100,6 +99,20 @@ export default function App() {
       platform: navigator.platform,
       userAgent: navigator.userAgent,
       timestamp: new Date().toISOString(),
+    });
+
+    // Initialize performance monitoring
+    const suggestions = performanceMonitor.getOptimizationSuggestions();
+
+    if (suggestions.length > 0) {
+      console.group('🚀 Performance Optimization Suggestions');
+      suggestions.forEach((suggestion) => console.log(`• ${suggestion}`));
+      console.groupEnd();
+    }
+
+    // Preload common syntax highlighting languages for better performance
+    preloadCommonLanguages().catch((error) => {
+      console.warn('Failed to preload syntax highlighting languages:', error);
     });
   }, []);
 

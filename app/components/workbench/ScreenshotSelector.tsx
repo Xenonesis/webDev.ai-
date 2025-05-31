@@ -22,7 +22,7 @@ export const ScreenshotSelector = memo(
     const [isCapturing, setIsCapturing] = useState(false);
     const [selectionStart, setSelectionStart] = useState<{ x: number; y: number } | null>(null);
     const [selectionEnd, setSelectionEnd] = useState<{ x: number; y: number } | null>(null);
-    const [permissionDenied, setPermissionDenied] = useState(false);
+    const [_permissionDenied, setPermissionDenied] = useState(false);
     const [showPermissionHelp, setShowPermissionHelp] = useState(false);
     const mediaStreamRef = useRef<MediaStream | null>(null);
     const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -167,12 +167,14 @@ export const ScreenshotSelector = memo(
       if (!isScreenCaptureSupported()) {
         toast.error('Screen capture is not supported in this browser');
         setIsSelectionMode(false);
+
         return;
       }
 
       if (!isSecureContext()) {
         toast.error('Screen capture requires a secure context (HTTPS or localhost)');
         setIsSelectionMode(false);
+
         return;
       }
 
@@ -348,9 +350,7 @@ export const ScreenshotSelector = memo(
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   Screen Capture Permission Required
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-300">
-                  Allow screen sharing to capture screenshots
-                </p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Allow screen sharing to capture screenshots</p>
               </div>
             </div>
 

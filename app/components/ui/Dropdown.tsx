@@ -51,6 +51,7 @@ export const Dropdown = ({ trigger, children, align = 'end', sideOffset = 5 }: D
             'data-[side=right]:slide-in-from-left-2',
             'data-[side=top]:slide-in-from-bottom-2',
             'z-[1000]',
+            'max-h-[300px] overflow-auto modern-scrollbar-thin',
           )}
           sideOffset={sideOffset}
           align={align}

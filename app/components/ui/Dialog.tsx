@@ -22,12 +22,14 @@ export const DialogButton = memo(({ type, children, onClick, disabled }: DialogB
   return (
     <button
       className={classNames(
-        'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors',
+        'inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         type === 'primary'
-          ? 'bg-purple-500 text-white hover:bg-purple-600 dark:bg-purple-500 dark:hover:bg-purple-600'
+          ? 'bg-gradient-to-r from-purple-500 to-violet-600 text-white hover:from-purple-600 hover:to-violet-700 shadow-lg hover:shadow-xl focus-visible:ring-purple-500/50 border border-purple-400/20'
           : type === 'secondary'
-            ? 'bg-transparent text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100'
-            : 'bg-transparent text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10',
+            ? 'bg-white/10 text-white border border-white/20 hover:bg-white/15 hover:border-white/30 backdrop-blur-sm shadow-md hover:shadow-lg focus-visible:ring-white/50'
+            : 'bg-red-500/10 text-red-400 border border-red-500/20 hover:bg-red-500/20 hover:border-red-500/30 backdrop-blur-sm shadow-md hover:shadow-lg focus-visible:ring-red-500/50',
+        disabled ? 'opacity-50 cursor-not-allowed hover:transform-none' : '',
       )}
       onClick={onClick}
       disabled={disabled}
@@ -116,7 +118,7 @@ export const Dialog = memo(({ children, className, showCloseButton = true, onClo
       <RadixDialog.Content asChild>
         <motion.div
           className={classNames(
-            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-gray-950 rounded-lg shadow-xl border border-bolt-elements-borderColor z-[9999] w-[520px] focus:outline-none',
+            'fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white/95 dark:bg-gray-950/95 backdrop-blur-xl rounded-xl shadow-2xl border-2 border-white/20 dark:border-gray-700/50 z-[9999] w-[520px] focus:outline-none',
             className,
           )}
           initial="closed"
@@ -416,7 +418,7 @@ export function SelectionDialog({
                   width="100%"
                   itemCount={items.length}
                   itemSize={60}
-                  className="scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-bolt-elements-bg-depth-3"
+                  className="modern-scrollbar-thin"
                 >
                   {ItemRenderer}
                 </FixedSizeList>

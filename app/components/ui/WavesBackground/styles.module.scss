@@ -1,0 +1,36 @@
+/* ReactBits.dev Canvas Waves Background Implementation */
+
+.wavesContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: -1;
+  pointer-events: none;
+
+  /* ReactBits.dev exact gradient background */
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+
+  /* Dark theme - deeper, more dramatic */
+  :global(html[data-theme='dark']) & {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 100%);
+  }
+}
+
+.wavesCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Accessibility: Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .wavesCanvas {
+    animation: none;
+  }
+}

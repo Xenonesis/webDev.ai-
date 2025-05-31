@@ -23,7 +23,7 @@ export function ParticlesBackground({
   className,
   particleCount = 80,
   speed = 0.3,
-  interactive = true
+  interactive = true,
 }: ParticlesBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number>();
@@ -38,6 +38,7 @@ export function ParticlesBackground({
     };
 
     checkDarkMode();
+
     const observer = new MutationObserver(checkDarkMode);
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
@@ -46,10 +47,16 @@ export function ParticlesBackground({
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+
+    if (!canvas) {
+      return;
+    }
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+
+    if (!ctx) {
+      return;
+    }
 
     // Set canvas size
     const resizeCanvas = () => {
@@ -72,7 +79,7 @@ export function ParticlesBackground({
       const rect = canvas.getBoundingClientRect();
       mouseRef.current = {
         x: e.clientX - rect.left,
-        y: e.clientY - rect.top
+        y: e.clientY - rect.top,
       };
     };
 
@@ -83,6 +90,7 @@ export function ParticlesBackground({
     // Initialize particles
     const initParticles = () => {
       particlesRef.current = [];
+
       for (let i = 0; i < particleCount; i++) {
         const maxLife = Math.random() * 200 + 100;
         particlesRef.current.push({
@@ -93,7 +101,7 @@ export function ParticlesBackground({
           size: Math.random() * 2 + 0.5,
           opacity: Math.random() * 0.8 + 0.2,
           life: Math.random() * maxLife,
-          maxLife
+          maxLife,
         });
       }
     };
@@ -112,6 +120,7 @@ export function ParticlesBackground({
       particlesRef.current.forEach((particle, index) => {
         // Update particle life
         particle.life += 1;
+
         if (particle.life > particle.maxLife) {
           particle.life = 0;
           particle.x = Math.random() * rect.width;
@@ -136,10 +145,21 @@ export function ParticlesBackground({
         }
 
         // Boundary wrapping
-        if (particle.x < 0) particle.x = rect.width;
-        if (particle.x > rect.width) particle.x = 0;
-        if (particle.y < 0) particle.y = rect.height;
-        if (particle.y > rect.height) particle.y = 0;
+        if (particle.x < 0) {
+          particle.x = rect.width;
+        }
+
+        if (particle.x > rect.width) {
+          particle.x = 0;
+        }
+
+        if (particle.y < 0) {
+          particle.y = rect.height;
+        }
+
+        if (particle.y > rect.height) {
+          particle.y = 0;
+        }
 
         // Apply friction
         particle.vx *= 0.99;
@@ -160,7 +180,7 @@ export function ParticlesBackground({
         ctx.restore();
 
         // Draw connections to nearby particles
-        particlesRef.current.slice(index + 1).forEach(otherParticle => {
+        particlesRef.current.slice(index + 1).forEach((otherParticle) => {
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
@@ -187,9 +207,11 @@ export function ParticlesBackground({
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
+
       if (interactive) {
         window.removeEventListener('mousemove', handleMouseMove);
       }
+
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
@@ -197,13 +219,7 @@ export function ParticlesBackground({
   }, [particleCount, speed, interactive, isDarkMode]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className={classNames(
-        'fixed inset-0 pointer-events-none z-0 w-full h-full',
-        className
-      )}
-    />
+    <canvas ref={canvasRef} className={classNames('fixed inset-0 pointer-events-none z-0 w-full h-full', className)} />
   );
 }
 

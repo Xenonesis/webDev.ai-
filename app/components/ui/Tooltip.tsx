@@ -55,6 +55,7 @@ const WithTooltip = forwardRef(
                 data-[state=closed]:animate-out
                 data-[state=closed]:fade-out-0
                 data-[state=closed]:zoom-out-95
+                modern-scrollbar-thin
                 ${className}
               `}
               sideOffset={sideOffset}

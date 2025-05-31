@@ -27,6 +27,7 @@ function initDynamicThemeStore() {
     const persistedDynamicTheme = localStorage.getItem(kDynamicTheme) as DynamicTheme | undefined;
     return persistedDynamicTheme ?? DEFAULT_DYNAMIC_THEME;
   }
+
   return DEFAULT_DYNAMIC_THEME;
 }
 
@@ -35,6 +36,7 @@ function initDynamicThemeEnabledStore() {
     const persistedEnabled = localStorage.getItem(kDynamicThemeEnabled);
     return persistedEnabled === 'true';
   }
+
   return false;
 }
 
@@ -76,17 +78,20 @@ export function toggleTheme() {
 }
 
 // Dynamic theme definitions
-export const DYNAMIC_THEMES: Record<DynamicTheme, {
-  name: string;
-  description: string;
-  gradientDirection: string;
-  primaryGradient: string;
-  accentColor: string;
-  animationSpeed: string;
-  borderRadius: string;
-  shadowIntensity: string;
-  fontWeight: string;
-}> = {
+export const DYNAMIC_THEMES: Record<
+  DynamicTheme,
+  {
+    name: string;
+    description: string;
+    gradientDirection: string;
+    primaryGradient: string;
+    accentColor: string;
+    animationSpeed: string;
+    borderRadius: string;
+    shadowIntensity: string;
+    fontWeight: string;
+  }
+> = {
   cosmic: {
     name: 'Cosmic',
     description: 'Deep space vibes with purple nebulae',
@@ -110,15 +115,15 @@ export const DYNAMIC_THEMES: Record<DynamicTheme, {
     fontWeight: '600',
   },
   nebula: {
-    name: 'Nebula',
-    description: 'Swirling cosmic dust and starlight',
-    gradientDirection: '225deg',
-    primaryGradient: 'linear-gradient(225deg, #ec4899 0%, #8b5cf6 50%, #6366f1 100%)',
-    accentColor: '#ec4899',
-    animationSpeed: '0.5s',
-    borderRadius: '20px',
-    shadowIntensity: '0 16px 48px rgba(236, 72, 153, 0.25)',
-    fontWeight: '700',
+    name: 'Waves',
+    description: 'Flowing purple waves with enhanced visibility',
+    gradientDirection: '135deg',
+    primaryGradient: 'linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%)',
+    accentColor: '#a855f7',
+    animationSpeed: '0.4s',
+    borderRadius: '16px',
+    shadowIntensity: '0 12px 40px rgba(168, 85, 247, 0.3)',
+    fontWeight: '600',
   },
   galaxy: {
     name: 'Galaxy',
@@ -166,7 +171,9 @@ export function toggleDynamicTheme() {
 }
 
 export function applyDynamicTheme(theme: DynamicTheme) {
-  if (import.meta.env.SSR) return;
+  if (import.meta.env.SSR) {
+    return;
+  }
 
   const themeConfig = DYNAMIC_THEMES[theme];
   const root = document.documentElement;
@@ -192,7 +199,9 @@ export function applyDynamicTheme(theme: DynamicTheme) {
 }
 
 export function removeDynamicTheme() {
-  if (import.meta.env.SSR) return;
+  if (import.meta.env.SSR) {
+    return;
+  }
 
   const root = document.documentElement;
   root.removeAttribute('data-dynamic-theme');

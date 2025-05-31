@@ -1,168 +1,44 @@
-<div align="center">
+# webdev.ai
 
-# 🌟 webdev.ai v0.20 (Beta)
+<div align="center">
 
 [![webdev.ai: AI-Powered Full-Stack Web Development in the Browser](./public/social_preview_index.jpg)](https://webdev.ai)
 
-<h3>🚀 Next-Generation AI-Powered Web Development Platform</h3>
+**🚀 AI-Powered Web Development Assistant**
 
-*Experience the future of web development with advanced AI capabilities that outperform traditional platforms*
+*Build, debug, and deploy web applications faster than ever with the power of AI*
 
-<br>
-
-[![GitHub Repository](https://img.shields.io/badge/GitHub-webDev.ai-blue?style=for-the-badge&logo=github)](https://github.com/Xenonesis/webDev.ai-)
-[![Version](https://img.shields.io/badge/Version-0.20_Beta-ff6b6b?style=for-the-badge)](https://github.com/Xenonesis/webDev.ai-)
-[![License: Custom](https://img.shields.io/badge/License-Custom-orange.svg?style=for-the-badge)](./LICENSE)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-webDev.ai-blue?style=for-the-badge&logo=github)](https://github.com/Xenonesis/webDev.ai-.git)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Node.js](https://img.shields.io/badge/Node.js-18.18.0+-green?style=for-the-badge&logo=node.js)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7.2-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 
-<br>
-
-[![GitHub stars](https://img.shields.io/github/stars/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/network/members)
-[![GitHub issues](https://img.shields.io/github/issues/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/issues)
-
 </div>
 
 ---
 
-## 🏆 Why webdev.ai v0.20 Beta Leads the Market
+## 🌟 Overview
 
-<div align="center">
+Welcome to **webdev.ai**, a revolutionary AI-powered web development assistant that transforms how you build web applications! This cutting-edge platform leverages multiple Large Language Models (LLMs) to provide intelligent coding assistance, debugging support, and deployment capabilities - all within your browser.
 
-### 🥇 Platform Comparison: webdev.ai vs Competition
+### 🎯 Key Highlights
 
-</div>
+- **Multi-LLM Support**: Choose from OpenAI, Anthropic, Ollama, OpenRouter, Gemini, LMStudio, Mistral, xAI, HuggingFace, DeepSeek, Groq, and more
+- **Browser-Based Development**: Full-stack web development directly in your browser using WebContainer technology
+- **Intelligent Code Generation**: AI-powered code writing, debugging, and optimization
+- **Real-time Collaboration**: Seamless integration with modern development workflows
+- **Extensible Architecture**: Easy integration of additional AI models via Vercel AI SDK
 
-| Feature | webdev.ai v0.20 | Lovable | Bolt.new | V0.dev |
-|---------|-----------------|---------|----------|--------|
-| **Multi-LLM Support** | ✅ 15+ Providers | ❌ Limited | ❌ Single Provider | ❌ Single Provider |
-| **Local AI Models** | ✅ Ollama Integration | ❌ Cloud Only | ❌ Cloud Only | ❌ Cloud Only |
-| **Real-time Collaboration** | ✅ Advanced | ⚠️ Basic | ❌ None | ❌ None |
-| **Full-stack Development** | ✅ Complete Suite | ⚠️ Limited | ⚠️ Frontend Focus | ⚠️ UI Components |
-| **Database Integration** | ✅ Supabase + Custom | ⚠️ Limited | ❌ None | ❌ None |
-| **Deployment Options** | ✅ Netlify + Vercel + Custom | ⚠️ Limited | ⚠️ Basic | ⚠️ Vercel Only |
-| **Performance Monitoring** | ✅ Advanced Analytics | ❌ None | ❌ None | ❌ None |
-| **Code Quality Assurance** | ✅ Built-in Linting + Testing | ⚠️ Basic | ❌ None | ❌ None |
-| **API Key Management** | ✅ Secure + Encrypted | ⚠️ Basic | ⚠️ Basic | ⚠️ Basic |
-| **Offline Capabilities** | ✅ WebContainer + Local | ❌ None | ❌ None | ❌ None |
-| **Open Source** | ✅ Fully Open | ❌ Proprietary | ❌ Proprietary | ❌ Proprietary |
+### 👨‍💻 Author
 
----
-
-<div align="center">
-
-## 🌟 Revolutionary Features in v0.20 Beta
-
-</div>
-
-**webdev.ai v0.20** introduces groundbreaking capabilities that redefine AI-assisted web development, making it the most comprehensive and powerful platform available.
-
-### 🚀 Revolutionary Features in v0.20 Beta
-
-<div align="center">
-
-#### 🎯 Core Innovations
-
-</div>
-
-<table>
-<tr>
-<td width="50%">
-
-� **Advanced AI Integration**
-- 15+ LLM providers supported
-- Intelligent model switching
-- Context-aware assistance
-- Local Ollama integration
-- Custom prompt optimization
-
-🏗️ **Full-Stack Powerhouse**
-- Complete development environment
-- Real-time code execution
-- Integrated terminal & file system
-- Database design & management
-- API development tools
-
-💡 **Smart Development Tools**
-- AI-powered debugging
-- Automatic code optimization
-- Performance monitoring
-- Security vulnerability scanning
-- Code quality analytics
-
-</td>
-<td width="50%">
-
-🌐 **Enhanced Collaboration**
-- Real-time team collaboration
-- Live code sharing
-- Version control integration
-- Project templates library
-- Community marketplace
-
-🚀 **Advanced Deployment**
-- Multi-platform deployment
-- Automated CI/CD pipelines
-- Environment management
-- Custom domain setup
-- Scalability optimization
-
-🔒 **Enterprise-Grade Security**
-- Encrypted API key storage
-- Secure code execution
-- Privacy-first architecture
-- GDPR compliance
-- SOC 2 Type II ready
-
-</td>
-</tr>
-</table>
-
----
-
-### 🏅 What Makes webdev.ai v0.20 Superior
-
-<div align="center">
-
-#### 🚀 Performance Benchmarks
-
-</div>
-
-| Metric | webdev.ai v0.20 | Lovable | Bolt.new | V0.dev |
-|--------|-----------------|---------|----------|--------|
-| **Code Generation Speed** | 🥇 2.3s avg | 🥈 4.1s | 🥉 5.2s | 6.8s |
-| **Project Setup Time** | 🥇 < 30s | 🥈 2-3 min | 🥉 3-5 min | 5-8 min |
-| **AI Response Accuracy** | 🥇 94.7% | 🥈 87.2% | 🥉 81.5% | 78.9% |
-| **Deployment Success Rate** | 🥇 99.2% | 🥈 92.1% | 🥉 88.7% | 85.3% |
-| **Framework Support** | 🥇 25+ | 🥈 12+ | 🥉 8+ | 6+ |
-| **Custom Integration** | 🥇 Unlimited | 🥈 Limited | 🥉 Very Limited | None |
-
-#### 🎯 Unique Advantages
-
-✅ **Open Source Transparency** - Full codebase access, community-driven development  
-✅ **Local AI Processing** - Run models locally with Ollama for privacy  
-✅ **Advanced Analytics** - Real-time performance monitoring and optimization  
-✅ **Enterprise Ready** - Scalable architecture with enterprise security  
-✅ **Community Ecosystem** - Rich template library and plugin system  
-✅ **Cost Effective** - No vendor lock-in, use your own API keys  
-
----
-
-<div align="center">
-
-### 👨‍💻 Created by **[Aditya](https://github.com/Xenonesis)**
-
-*Leading the next generation of AI-powered development tools*
-
-</div>
+**Aditya** - *Project Creator & Lead Developer*
 
 ---
 
 ## 📋 Table of Contents
 
-- [� Platform Comparison](#-platform-comparison-webdevai-vs-competition)
-- [🌟 Revolutionary Features](#-revolutionary-features-in-v020-beta)
+- [🌟 Overview](#-overview)
+- [✨ Features](#-features)
 - [🚀 Quick Start](#-quick-start)
 - [⚙️ Installation](#️-installation)
 - [🔧 Configuration](#-configuration)
@@ -176,230 +52,57 @@
 
 ---
 
-## ✨ v0.20 Beta Features Showcase
+## ✨ Features
 
-<div align="center">
+### 🎯 Core Capabilities
 
-### 🎯 Next-Generation Development Capabilities
+- **🤖 Multi-LLM Integration**: Support for 15+ AI providers including:
+  - OpenAI (GPT-4, GPT-3.5)
+  - Anthropic (Claude 3.5 Sonnet, Claude 3 Opus)
+  - Google (Gemini Pro, Gemini Ultra)
+  - Ollama (Local models)
+  - Groq, Mistral, xAI, HuggingFace, DeepSeek, and more
 
-</div>
+- **🌐 Browser-Based Development**: Full-stack development environment powered by WebContainer technology
+- **📁 Project Management**: Create, edit, and manage complete web applications
+- **🔄 Real-time Preview**: Instant preview of your applications with hot reload
+- **📱 Responsive Design**: Mobile-friendly interface for development on any device
 
-<table>
-<tr>
-<td width="33%">
+### 🛠️ Advanced Features
 
-### � **Advanced AI Engine**
-
-- **15+ LLM Providers Support**
-  - OpenAI (GPT-4, GPT-o1, GPT-3.5)
-  - Anthropic (Claude 3.5 Sonnet, Haiku)
-  - Google (Gemini Pro, Flash)
-  - Ollama (70B+ Local models)
-  - Groq, Mistral, xAI, DeepSeek, Cohere
-  - Custom OpenAI-compatible endpoints
-
-- **Intelligent Context Management**
-  - Multi-file context awareness
-  - Smart code completion
-  - Automated documentation generation
-  - Code review and optimization
-
-</td>
-<td width="33%">
-
-### 🏗️ **Full-Stack Powerhouse**
-
-- **Complete Development Environment**
-  - WebContainer-based execution
-  - Integrated terminal & file system
-  - Real-time preview & hot reload
-  - Multi-framework support (React, Vue, Angular, Svelte)
-
-- **Database Integration**
-  - Supabase integration
-  - PostgreSQL support
-  - Schema design assistance
-  - Query optimization
-
-- **API Development**
-  - REST API generation
-  - GraphQL support
-  - Middleware creation
-  - Authentication setup
-
-</td>
-<td width="33%">
-
-### 🚀 **Deployment & DevOps**
-
-- **Multi-Platform Deployment**
-  - Netlify one-click deploy
-  - Vercel integration
-  - Custom server deployment
-  - Docker containerization
-
-- **CI/CD Automation**
-  - GitHub Actions setup
-  - Automated testing
-  - Environment management
-  - Rollback capabilities
-
-- **Performance Optimization**
-  - Bundle size analysis
-  - Core Web Vitals monitoring
-  - Automated optimization suggestions
-  - CDN configuration
-
-</td>
-</tr>
-</table>
-
-### 🔥 Exclusive Beta Features
-
-<div align="center">
-
-#### 🆕 What's New in v0.20
-
-</div>
-
-🎯 **Smart Project Analysis** - AI analyzes your entire codebase for optimization opportunities  
-🔧 **Advanced Debugging Tools** - Real-time error detection with suggested fixes  
-📊 **Performance Dashboard** - Comprehensive analytics and monitoring  
-🤝 **Team Collaboration** - Real-time code sharing and collaborative editing  
-🎨 **UI/UX Enhancement** - AI-powered design suggestions and improvements  
-🔒 **Security Scanning** - Automated vulnerability detection and remediation  
-📱 **Mobile-First Development** - Responsive design assistance and testing  
-⚡ **Speed Optimization** - Automated performance tuning and caching strategies
-- **Auto Error Detection**
-
-</td>
-<td width="33%">
-
-### 🌐 **Browser-Based**
-- **WebContainer Technology**
-- **No Local Setup Required**
-- **Full-Stack Development**
-- **Real-time Preview**
-- **Hot Reload Support**
-- **Mobile-Friendly Interface**
-- **Cross-Platform Compatible**
-
-</td>
-<td width="33%">
-
-### 🚀 **Production Ready**
-- **One-Click Deployment**
-  - Netlify Integration
-  - Vercel Support
-  - Docker Containers
-
-- **Export Options**
-  - ZIP Downloads
-  - GitHub Sync
-  - Local Folder Sync
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-### 🛠️ Advanced Development Tools
-
-</div>
-
-<table>
-<tr>
-<td width="50%">
-
-🖼️ **Visual Development**
-- Image-to-code generation
-- Visual context understanding
-- UI/UX design assistance
-- Responsive design tools
-
-💻 **Integrated Terminal**
-- Built-in command execution
-- Real-time output viewing
-- Package management
-- Development server control
-
-</td>
-<td width="50%">
-
-⏪ **Version Control**
-- Code change tracking
-- Revert functionality
-- Project history
-- Snapshot management
-
-🔍 **Smart Debugging**
-- Automatic error detection
-- AI-powered error fixing
-- Performance optimization
-- Code quality analysis
-
-</td>
-</tr>
-</table>
+- **🖼️ Image Integration**: Attach images to prompts for visual context
+- **💻 Integrated Terminal**: Built-in terminal for running commands and viewing output
+- **⏪ Version Control**: Revert code changes and track project history
+- **📦 Export Options**: Download projects as ZIP files or sync to local folders
+- **🚀 One-Click Deployment**: Deploy directly to Netlify and other platforms
+- **🔍 Error Detection**: Automatic detection and AI-powered fixing of terminal and preview errors
 
 ---
 
 ## 🚀 Quick Start
 
-<div align="center">
+Get webdev.ai running in under 5 minutes!
 
-### ⚡ Get webdev.ai running in under 5 minutes!
+### Prerequisites
 
-</div>
+- **Node.js** 18.18.0 or higher
+- **pnpm** (recommended) or npm
 
-<table>
-<tr>
-<td width="50%">
-
-### 📋 **Prerequisites**
-
-✅ **Node.js** 18.18.0 or higher
-✅ **pnpm** (recommended) or npm
-✅ **Modern browser** (Chrome, Firefox, Safari, Edge)
-
-</td>
-<td width="50%">
-
-### 🎯 **What You'll Get**
-
-🌐 Full-stack development environment
-🤖 AI-powered coding assistant
-⚡ Real-time preview and hot reload
-🚀 One-click deployment options
-
-</td>
-</tr>
-</table>
-
-<div align="center">
-
-### 🛠️ **Installation Steps**
-
-</div>
+### Installation
 
 ```bash
-# 1️⃣ Clone the repository
+# Clone the repository
 git clone https://github.com/Xenonesis/webDev.ai-.git
 cd webDev.ai-
 
-# 2️⃣ Install dependencies
+# Install dependencies
 pnpm install
 
-# 3️⃣ Start development server
+# Start development server
 pnpm run dev
 ```
 
-<div align="center">
-
-🎉 **Open [http://localhost:5173](http://localhost:5173) in your browser and start building!** 🎉
-
-</div>
+Open [http://localhost:5173](http://localhost:5173) in your browser and start building! 🎉
 
 ---
 
@@ -785,39 +488,50 @@ For more detailed answers, visit our [FAQ Page](FAQ.md).
 
 ## 📄 License
 
-### 📋 Custom License
+### 📋 MIT License
 
-webdev.ai is released under a **Custom License** that allows free use for non-production purposes while reserving production rights exclusively for webdev.ai.
+webdev.ai is released under the [MIT License](LICENSE), making it free for personal and commercial use.
 
-### 🔓 **Permitted Uses (Free)**
-- **Personal development and learning**
-- **Educational purposes and academic research**
-- **Internal company tools** (non-customer facing)
-- **Open-source contributions** and modifications
-- **Testing and development** environments
-- **Prototypes and proof-of-concepts**
+```
+MIT License
 
-### 🔒 **Production Use Restrictions**
+Copyright (c) 2024 Aditya
 
-**Production use is exclusively reserved for webdev.ai and authorized representatives.**
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Production use includes:
-- Hosting the software on public servers accessible to end users
-- Offering the software as a service to customers or clients
-- Deploying the software in commercial environments
-- Using the software to generate revenue or provide commercial services
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-### 📞 **Commercial Licensing**
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
-For production use licensing inquiries, please contact: **itisaddy@gmail.com**
+### ⚠️ WebContainer API License
 
-### ⚖️ **Full License**
+**Important**: While webdev.ai source code is MIT licensed, it uses WebContainer API which [requires commercial licensing](https://webcontainers.io/enterprise) for production use in commercial, for-profit settings.
 
-See the complete [LICENSE](LICENSE) file for detailed terms and conditions.
+**Who needs a commercial license?**
+- Companies using webdev.ai to serve customers
+- SaaS platforms incorporating webdev.ai
+- Commercial products built on webdev.ai
 
-### 🌐 **WebContainer Licensing**
+**Who doesn't need a commercial license?**
+- Personal projects and learning
+- Open-source projects
+- Prototypes and POCs
+- Internal company tools (non-customer facing)
 
-**Additional Note**: webdev.ai uses WebContainer API which [requires commercial licensing](https://webcontainers.io/enterprise) for production use in commercial, for-profit settings, separate from the webdev.ai license.
+For compliance questions, contact [WebContainer licensing](https://webcontainers.io/enterprise).
 
 ---
 
@@ -843,55 +557,13 @@ See the complete [LICENSE](LICENSE) file for detailed terms and conditions.
 
 <div align="center">
 
-## 🌟 **Join the webdev.ai Community**
-
 **⭐ Star this repository if you find it helpful!**
 
 [![GitHub stars](https://img.shields.io/github/stars/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/network/members)
-[![GitHub watchers](https://img.shields.io/github/watchers/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/watchers)
-
-<br>
-
-### 🚀 **Quick Links**
-
-<table>
-<tr>
-<td align="center" width="25%">
-<a href="https://github.com/Xenonesis/webDev.ai-">
-<img src="https://img.shields.io/badge/🚀-Get%20Started-blue?style=for-the-badge" alt="Get Started">
-</a>
-</td>
-<td align="center" width="25%">
-<a href="./docs/">
-<img src="https://img.shields.io/badge/📖-Documentation-green?style=for-the-badge" alt="Documentation">
-</a>
-</td>
-<td align="center" width="25%">
-<a href="https://github.com/Xenonesis/webDev.ai-/issues">
-<img src="https://img.shields.io/badge/🐛-Report%20Bug-red?style=for-the-badge" alt="Report Bug">
-</a>
-</td>
-<td align="center" width="25%">
-<a href="https://github.com/Xenonesis/webDev.ai-/issues">
-<img src="https://img.shields.io/badge/💡-Request%20Feature-yellow?style=for-the-badge" alt="Request Feature">
-</a>
-</td>
-</tr>
-</table>
-
-<br>
-
----
-
-<br>
 
 **Made with ❤️ by [Aditya](https://github.com/Xenonesis) and the webdev.ai community**
 
-*Empowering developers worldwide with AI-assisted web development*
-
-<br>
-
-**© 2024 webdev.ai • Licensed under Custom License • Built with TypeScript & React**
+[🚀 Get Started](https://github.com/Xenonesis/webDev.ai-) • [📖 Documentation](./docs/) • [🐛 Report Bug](https://github.com/Xenonesis/webDev.ai-/issues) • [💡 Request Feature](https://github.com/Xenonesis/webDev.ai-/issues)
 
 </div>

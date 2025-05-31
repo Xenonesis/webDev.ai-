@@ -58,7 +58,13 @@ export function Chat() {
       <ToastContainer
         closeButton={({ closeToast }) => {
           return (
-            <button className="Toastify__close-button" onClick={closeToast}>
+            <button
+              type="button"
+              className="Toastify__close-button"
+              onClick={closeToast}
+              title="Close notification"
+              aria-label="Close notification"
+            >
               <div className="i-ph:x text-lg" />
             </button>
           );
@@ -319,66 +325,73 @@ export const ChatImpl = memo(
         setFakeLoading(true);
 
         if (autoSelectTemplate) {
-          const { template, title } = await selectStarterTemplate({
-            message: finalMessageContent,
-            model,
-            provider,
-          });
-
-          if (template !== 'blank') {
-            const temResp = await getTemplates(template, title).catch((e) => {
-              if (e.message.includes('rate limit')) {
-                toast.warning('Rate limit exceeded. Skipping starter template\n Continuing with blank template');
-              } else {
-                toast.warning('Failed to import starter template\n Continuing with blank template');
-              }
-
-              return null;
+          try {
+            const { template, title } = await selectStarterTemplate({
+              message: finalMessageContent,
+              model,
+              provider,
             });
 
-            if (temResp) {
-              const { assistantMessage, userMessage } = temResp;
-              setMessages([
-                {
-                  id: `1-${new Date().getTime()}`,
-                  role: 'user',
-                  content: [
-                    {
-                      type: 'text',
-                      text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${finalMessageContent}`,
-                    },
-                    ...imageDataList.map((imageData) => ({
-                      type: 'image',
-                      image: imageData,
-                    })),
-                  ] as any,
-                },
-                {
-                  id: `2-${new Date().getTime()}`,
-                  role: 'assistant',
-                  content: assistantMessage,
-                },
-                {
-                  id: `3-${new Date().getTime()}`,
-                  role: 'user',
-                  content: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${userMessage}`,
-                  annotations: ['hidden'],
-                },
-              ]);
-              reload();
-              setInput('');
-              Cookies.remove(PROMPT_COOKIE_KEY);
+            if (template !== 'blank') {
+              const temResp = await getTemplates(template, title).catch((e) => {
+                if (e.message.includes('rate limit')) {
+                  toast.warning('Rate limit exceeded. Skipping starter template\n Continuing with blank template');
+                } else {
+                  toast.warning('Failed to import starter template\n Continuing with blank template');
+                }
 
-              setUploadedFiles([]);
-              setImageDataList([]);
+                return null;
+              });
 
-              resetEnhancer();
+              if (temResp) {
+                const { assistantMessage, userMessage } = temResp;
+                setMessages([
+                  {
+                    id: `1-${new Date().getTime()}`,
+                    role: 'user',
+                    content: [
+                      {
+                        type: 'text',
+                        text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${finalMessageContent}`,
+                      },
+                      ...imageDataList.map((imageData) => ({
+                        type: 'image',
+                        image: imageData,
+                      })),
+                    ] as any,
+                  },
+                  {
+                    id: `2-${new Date().getTime()}`,
+                    role: 'assistant',
+                    content: assistantMessage,
+                  },
+                  {
+                    id: `3-${new Date().getTime()}`,
+                    role: 'user',
+                    content: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${userMessage}`,
+                    annotations: ['hidden'],
+                  },
+                ]);
+                reload();
+                setInput('');
+                Cookies.remove(PROMPT_COOKIE_KEY);
 
-              textareaRef.current?.blur();
-              setFakeLoading(false);
+                setUploadedFiles([]);
+                setImageDataList([]);
 
-              return;
+                resetEnhancer();
+
+                textareaRef.current?.blur();
+                setFakeLoading(false);
+
+                return;
+              }
             }
+          } catch (templateError) {
+            console.error('Template selection failed:', templateError);
+            toast.warning('Failed to auto-select template. Using blank template instead.');
+
+            // Continue with normal message flow if template selection fails
           }
         }
 

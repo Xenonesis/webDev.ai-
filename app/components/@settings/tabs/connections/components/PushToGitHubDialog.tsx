@@ -278,7 +278,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="w-[90vw] md:w-[600px] max-h-[85vh] overflow-y-auto"
+              className="w-[90vw] md:w-[600px] max-h-[85vh] overflow-y-auto modern-scrollbar"
             >
               <Dialog.Content
                 className="bg-white dark:bg-bolt-elements-background-depth-1 rounded-lg border border-bolt-elements-borderColor dark:border-bolt-elements-borderColor-dark shadow-xl"
@@ -588,7 +588,7 @@ export function PushToGitHubDialog({ isOpen, onClose, onPush }: PushToGitHubDial
                         variant="compact"
                       />
                     ) : (
-                      <div className="space-y-2 max-h-[200px] overflow-y-auto pr-2 custom-scrollbar">
+                      <div className="space-y-2 max-h-[200px] overflow-y-auto pr-2 modern-scrollbar-thin">
                         {filteredRepos.length === 0 && repoSearchQuery.trim() !== '' ? (
                           <EmptyState
                             icon="i-ph:magnifying-glass"

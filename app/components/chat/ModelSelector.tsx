@@ -282,12 +282,7 @@ export const ModelSelector = ({
               </div>
             </div>
 
-            <div
-              className={classNames(
-                'max-h-60 overflow-y-auto',
-                'modern-scrollbar-thin',
-              )}
-            >
+            <div className={classNames('max-h-60 overflow-y-auto', 'modern-scrollbar-thin')}>
               {filteredProviders.length === 0 ? (
                 <div className="px-3 py-2 text-sm text-bolt-elements-textTertiary">No providers found</div>
               ) : (
@@ -399,12 +394,7 @@ export const ModelSelector = ({
               </div>
             </div>
 
-            <div
-              className={classNames(
-                'max-h-60 overflow-y-auto',
-                'modern-scrollbar-thin',
-              )}
-            >
+            <div className={classNames('max-h-60 overflow-y-auto', 'modern-scrollbar-thin')}>
               {modelLoading === 'all' || modelLoading === provider?.name ? (
                 <div className="px-3 py-2 text-sm text-bolt-elements-textTertiary">Loading...</div>
               ) : filteredModels.length === 0 ? (

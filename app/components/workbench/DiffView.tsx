@@ -4,13 +4,13 @@ import { workbenchStore } from '~/lib/stores/workbench';
 import type { FileMap } from '~/lib/stores/files';
 import type { EditorDocument } from '~/components/editor/codemirror/CodeMirrorEditor';
 import { diffLines, type Change } from 'diff';
-import { getHighlighter } from 'shiki';
 import '~/styles/diff-view.css';
 import { diffFiles, extractRelativePath } from '~/utils/diff';
 import { ActionRunner } from '~/lib/runtime/action-runner';
 import type { FileHistory } from '~/types/actions';
 import { getLanguageFromExtension } from '~/utils/getLanguageFromExtension';
 import { themeStore } from '~/lib/stores/theme';
+import { getOptimizedHighlighter } from '~/utils/syntax-highlighting';
 
 interface CodeComparisonProps {
   beforeCode: string;
@@ -375,15 +375,35 @@ const NoChangesView = memo(
                 <span className="mr-2"> </span>
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: highlighter
-                      ? highlighter
+                    __html: (() => {
+                      if (!highlighter) {
+                        return line;
+                      }
+
+                      try {
+                        return highlighter
                           .codeToHtml(line, {
                             lang: language,
                             theme: theme === 'dark' ? 'github-dark' : 'github-light',
                           })
                           .replace(/<\/?pre[^>]*>/g, '')
-                          .replace(/<\/?code[^>]*>/g, '')
-                      : line,
+                          .replace(/<\/?code[^>]*>/g, '');
+                      } catch {
+                        // Fallback to plaintext if language is not found
+                        try {
+                          return highlighter
+                            .codeToHtml(line, {
+                              lang: 'plaintext',
+                              theme: theme === 'dark' ? 'github-dark' : 'github-light',
+                            })
+                            .replace(/<\/?pre[^>]*>/g, '')
+                            .replace(/<\/?code[^>]*>/g, '');
+                        } catch {
+                          // If even plaintext fails, escape HTML and return raw content
+                          return line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                        }
+                      }
+                    })(),
                   }}
                 />
               </div>
@@ -423,12 +443,32 @@ const CodeLine = memo(
 
     const renderContent = () => {
       if (type === 'unchanged' || !block.charChanges) {
-        const highlightedCode = highlighter
-          ? highlighter
+        let highlightedCode = content;
+
+        if (highlighter) {
+          try {
+            // Try to highlight with the specified language
+            highlightedCode = highlighter
               .codeToHtml(content, { lang: language, theme: theme === 'dark' ? 'github-dark' : 'github-light' })
               .replace(/<\/?pre[^>]*>/g, '')
-              .replace(/<\/?code[^>]*>/g, '')
-          : content;
+              .replace(/<\/?code[^>]*>/g, '');
+          } catch (error) {
+            // If language is not found, try with plaintext
+            console.warn(`Language '${language}' not found, falling back to plaintext:`, error);
+
+            try {
+              highlightedCode = highlighter
+                .codeToHtml(content, { lang: 'plaintext', theme: theme === 'dark' ? 'github-dark' : 'github-light' })
+                .replace(/<\/?pre[^>]*>/g, '')
+                .replace(/<\/?code[^>]*>/g, '');
+            } catch (fallbackError) {
+              // If even plaintext fails, just escape HTML and use raw content
+              console.error('Failed to highlight even with plaintext:', fallbackError);
+              highlightedCode = content.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+          }
+        }
+
         return <span dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
       }
 
@@ -437,15 +477,33 @@ const CodeLine = memo(
           {block.charChanges.map((change, index) => {
             const changeClass = changeColorStyles[change.type];
 
-            const highlightedCode = highlighter
-              ? highlighter
+            let highlightedCode = change.value;
+
+            if (highlighter) {
+              try {
+                highlightedCode = highlighter
                   .codeToHtml(change.value, {
                     lang: language,
                     theme: theme === 'dark' ? 'github-dark' : 'github-light',
                   })
                   .replace(/<\/?pre[^>]*>/g, '')
-                  .replace(/<\/?code[^>]*>/g, '')
-              : change.value;
+                  .replace(/<\/?code[^>]*>/g, '');
+              } catch {
+                // Fallback to plaintext if language is not found
+                try {
+                  highlightedCode = highlighter
+                    .codeToHtml(change.value, {
+                      lang: 'plaintext',
+                      theme: theme === 'dark' ? 'github-dark' : 'github-light',
+                    })
+                    .replace(/<\/?pre[^>]*>/g, '')
+                    .replace(/<\/?code[^>]*>/g, '');
+                } catch {
+                  // If even plaintext fails, escape HTML and use raw content
+                  highlightedCode = change.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                }
+              }
+            }
 
             return <span key={index} className={changeClass} dangerouslySetInnerHTML={{ __html: highlightedCode }} />;
           })}
@@ -542,47 +600,9 @@ const FileInfo = memo(
   },
 );
 
-// Create and manage a single highlighter instance at the module level
-let highlighterInstance: any = null;
-let highlighterPromise: Promise<any> | null = null;
-
-const getSharedHighlighter = async () => {
-  if (highlighterInstance) {
-    return highlighterInstance;
-  }
-
-  if (highlighterPromise) {
-    return highlighterPromise;
-  }
-
-  highlighterPromise = getHighlighter({
-    themes: ['github-dark', 'github-light'],
-    langs: [
-      'typescript',
-      'javascript',
-      'json',
-      'html',
-      'css',
-      'jsx',
-      'tsx',
-      'python',
-      'php',
-      'java',
-      'c',
-      'cpp',
-      'csharp',
-      'go',
-      'ruby',
-      'rust',
-      'plaintext',
-    ],
-  });
-
-  highlighterInstance = await highlighterPromise;
-  highlighterPromise = null;
-
-  // Clear the promise once resolved
-  return highlighterInstance;
+// Use the optimized highlighter for diff view
+const getSharedHighlighter = async (_language?: string) => {
+  return getOptimizedHighlighter(['github-dark', 'github-light']);
 };
 
 const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }: CodeComparisonProps) => {
@@ -599,8 +619,15 @@ const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }
   const { unifiedBlocks, hasChanges, isBinary, error } = useProcessChanges(beforeCode, afterCode);
 
   useEffect(() => {
-    // Fetch the shared highlighter instance
-    getSharedHighlighter().then(setHighlighter);
+    // Fetch the shared highlighter instance with the specific language
+    getSharedHighlighter(language)
+      .then(setHighlighter)
+      .catch((error) => {
+        console.error('Failed to load highlighter for language:', language, error);
+
+        // Fallback to basic highlighter without specific language
+        getOptimizedHighlighter(['github-dark', 'github-light']).then(setHighlighter);
+      });
 
     /*
      * No cleanup needed here for the highlighter instance itself,
@@ -610,7 +637,7 @@ const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }
      * shared instance manager with reference counting or similar.
      * For static themes/langs, a single instance is sufficient.
      */
-  }, []); // Empty dependency array ensures this runs only once on mount
+  }, [language]); // Re-fetch when language changes
 
   if (isBinary || error) {
     return renderContentWarning(isBinary ? 'binary' : 'error');

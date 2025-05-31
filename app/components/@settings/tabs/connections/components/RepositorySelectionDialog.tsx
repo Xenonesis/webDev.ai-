@@ -864,7 +864,7 @@ export function RepositorySelectionDialog({ isOpen, onClose, onSelect }: Reposit
                     </div>
                   )}
 
-                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 custom-scrollbar">
+                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 modern-scrollbar-thin">
                     {selectedRepository ? (
                       <div className="space-y-5 bg-gradient-to-br from-purple-500/5 to-blue-500/5 p-5 rounded-xl border border-bolt-elements-borderColor dark:border-bolt-elements-borderColor-dark">
                         <div className="flex items-center justify-between">

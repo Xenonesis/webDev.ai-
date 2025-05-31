@@ -1,0 +1,309 @@
+/* Enhanced Scrollbar System for webdev.ai */
+
+/* Base scrollbar mixin for consistent styling */
+@mixin base-scrollbar($width: 8px, $height: 8px) {
+  scrollbar-width: thin;
+  
+  &::-webkit-scrollbar {
+    width: $width;
+    height: $height;
+  }
+  
+  &::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg);
+    border-radius: calc($width / 2);
+    transition: background-color 0.2s ease;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border-radius: calc($width / 2);
+    border: 1px solid var(--scrollbar-thumb-border);
+    box-shadow: var(--scrollbar-thumb-shadow);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    &:hover {
+      background: var(--scrollbar-thumb-bg-hover);
+      border-color: var(--scrollbar-thumb-border-hover);
+      box-shadow: var(--scrollbar-thumb-shadow-hover);
+      transform: scaleY(1.1);
+    }
+    
+    &:active {
+      background: var(--scrollbar-thumb-bg-active);
+      transform: scaleY(1.2);
+    }
+  }
+  
+  &:hover::-webkit-scrollbar-track {
+    background: var(--scrollbar-track-bg-hover);
+  }
+}
+
+/* Enhanced modern scrollbar with gradient effects */
+.modern-scrollbar {
+  @include base-scrollbar(10px, 10px);
+  overflow: auto;
+  
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+  
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--scrollbar-thumb-bg), var(--scrollbar-thumb-bg-hover));
+    border: 2px solid transparent;
+    background-clip: content-box;
+    
+    &:hover {
+      background: linear-gradient(135deg, var(--scrollbar-thumb-bg-hover), var(--scrollbar-thumb-bg-active));
+      box-shadow: 
+        var(--scrollbar-thumb-shadow-hover),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Thin variant for compact areas */
+.modern-scrollbar-thin {
+  @include base-scrollbar(6px, 6px);
+  
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+}
+
+/* Auto-hide scrollbar variant */
+.modern-scrollbar-auto {
+  @include base-scrollbar(8px, 8px);
+  
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s ease;
+  
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+  
+  &:hover {
+    scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+    
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb-bg);
+      
+      &:hover {
+        background: var(--scrollbar-thumb-bg-hover);
+      }
+    }
+  }
+}
+
+/* Inverted scrollbar for light content on dark backgrounds */
+.modern-scrollbar-invert {
+  @include base-scrollbar(8px, 8px);
+  
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--bolt-elements-textPrimary), transparent 70%);
+    border-color: color-mix(in srgb, var(--bolt-elements-textPrimary), transparent 80%);
+    
+    &:hover {
+      background: color-mix(in srgb, var(--bolt-elements-textPrimary), transparent 50%);
+      border-color: color-mix(in srgb, var(--bolt-elements-textPrimary), transparent 60%);
+    }
+  }
+  
+  scrollbar-color: color-mix(in srgb, var(--bolt-elements-textPrimary), transparent 50%) transparent;
+}
+
+/* Specialized scrollbar variants */
+
+/* Chat scrollbar - subtle and elegant */
+.chat-scrollbar {
+  @include base-scrollbar(6px, 6px);
+  
+  scrollbar-color: var(--scrollbar-chat-thumb) var(--scrollbar-track-bg);
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-chat-thumb);
+    border: none;
+    
+    &:hover {
+      background: var(--scrollbar-chat-thumb-hover);
+      transform: scaleY(1.05);
+    }
+  }
+}
+
+/* Code editor scrollbar - developer-friendly */
+.code-scrollbar {
+  @include base-scrollbar(8px, 8px);
+  
+  scrollbar-color: var(--scrollbar-code-thumb) var(--scrollbar-track-bg);
+  
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--scrollbar-code-thumb), var(--scrollbar-code-thumb-hover));
+    border-radius: 2px;
+    
+    &:hover {
+      background: linear-gradient(135deg, var(--scrollbar-code-thumb-hover), var(--scrollbar-code-thumb));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+/* Settings scrollbar - clean and functional */
+.settings-scrollbar {
+  @include base-scrollbar(8px, 8px);
+  
+  scrollbar-color: var(--scrollbar-settings-thumb) var(--scrollbar-track-bg);
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-settings-thumb);
+    
+    &:hover {
+      background: var(--scrollbar-settings-thumb-hover);
+      box-shadow: 0 2px 8px rgba(147, 51, 234, 0.2);
+    }
+  }
+}
+
+/* File tree scrollbar - compact and functional */
+.filetree-scrollbar {
+  @include base-scrollbar(4px, 4px);
+  
+  scrollbar-color: var(--scrollbar-filetree-thumb) var(--scrollbar-track-bg);
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-filetree-thumb);
+    border-radius: 2px;
+    
+    &:hover {
+      background: var(--scrollbar-filetree-thumb-hover);
+      transform: scaleX(1.2);
+    }
+  }
+}
+
+/* Terminal scrollbar - monospace friendly with distinct styling */
+.terminal-scrollbar {
+  @include base-scrollbar(8px, 8px);
+  
+  scrollbar-color: var(--scrollbar-terminal-thumb) rgba(0, 0, 0, 0.2);
+  
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-terminal-thumb);
+    border-radius: 4px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    
+    &:hover {
+      background: var(--scrollbar-terminal-thumb-hover);
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.3);
+    }
+  }
+}
+
+/* Custom scrollbar for specific components */
+.custom-scrollbar {
+  @include base-scrollbar(6px, 6px);
+
+  scrollbar-color: var(--scrollbar-thumb-bg) var(--scrollbar-track-bg);
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--scrollbar-thumb-bg-hover);
+    }
+  }
+}
+
+/* Mobile and responsive optimizations */
+@media (max-width: 768px) {
+  .modern-scrollbar, .chat-scrollbar, .settings-scrollbar {
+    @include base-scrollbar(4px, 4px);
+  }
+
+  .code-scrollbar {
+    @include base-scrollbar(6px, 6px);
+  }
+
+  .filetree-scrollbar {
+    @include base-scrollbar(3px, 3px);
+  }
+
+  .terminal-scrollbar {
+    @include base-scrollbar(5px, 5px);
+  }
+}
+
+@media (max-width: 480px) {
+  .modern-scrollbar, .chat-scrollbar, .settings-scrollbar, .filetree-scrollbar {
+    @include base-scrollbar(3px, 3px);
+  }
+
+  .code-scrollbar, .terminal-scrollbar {
+    @include base-scrollbar(4px, 4px);
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .modern-scrollbar, .chat-scrollbar, .code-scrollbar,
+  .settings-scrollbar, .filetree-scrollbar, .terminal-scrollbar {
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb-bg-hover);
+      border-radius: 4px;
+
+      &:active {
+        background: var(--scrollbar-thumb-bg-active);
+      }
+    }
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .modern-scrollbar, .chat-scrollbar, .code-scrollbar,
+  .settings-scrollbar, .filetree-scrollbar, .terminal-scrollbar {
+    &::-webkit-scrollbar-thumb {
+      border-width: 0.5px;
+    }
+  }
+}
+
+/* Focus states for accessibility */
+.modern-scrollbar:focus-within, .chat-scrollbar:focus-within,
+.code-scrollbar:focus-within, .settings-scrollbar:focus-within,
+.filetree-scrollbar:focus-within, .terminal-scrollbar:focus-within {
+  &::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb-bg-hover);
+    box-shadow:
+      var(--scrollbar-thumb-shadow-hover),
+      0 0 0 2px var(--bolt-elements-borderColorActive);
+  }
+}
+
+/* Smooth scrolling behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Hide scrollbars but maintain functionality */
+.scrollbar-hidden {
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Overlay scrollbars for modern browsers */
+.scrollbar-overlay {
+  overflow: overlay;
+}

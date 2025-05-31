@@ -9,7 +9,11 @@ import { DynamicThemeIndicator } from '~/components/ui/DynamicThemeIndicator';
 export const meta: MetaFunction = () => {
   return [
     { title: 'webdev.ai - AI-Powered Web Development' },
-    { name: 'description', content: 'Build web applications with AI assistance. webdev.ai helps you create, debug, and deploy web projects faster than ever.' }
+    {
+      name: 'description',
+      content:
+        'Build web applications with AI assistance. webdev.ai helps you create, debug, and deploy web projects faster than ever.',
+    },
   ];
 };
 
@@ -27,9 +31,7 @@ export default function Index() {
       <BackgroundRays />
       <Header />
       <ClientOnly fallback={<BaseChat />}>{() => <Chat />}</ClientOnly>
-      <ClientOnly>
-        {() => <DynamicThemeIndicator />}
-      </ClientOnly>
+      <ClientOnly>{() => <DynamicThemeIndicator />}</ClientOnly>
     </div>
   );
 }

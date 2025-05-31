@@ -1,7 +1,8 @@
 import { memo, useEffect, useState } from 'react';
-import { bundledLanguages, codeToHtml, isSpecialLang, type BundledLanguage, type SpecialLanguage } from 'shiki';
+import { bundledLanguages, isSpecialLang, type BundledLanguage, type SpecialLanguage } from 'shiki';
 import { classNames } from '~/utils/classNames';
 import { createScopedLogger } from '~/utils/logger';
+import { getHighlighterForLanguage } from '~/utils/syntax-highlighting';
 
 import styles from './CodeBlock.module.scss';
 
@@ -45,7 +46,35 @@ export const CodeBlock = memo(
       logger.trace(`Language = ${effectiveLanguage}`);
 
       const processCode = async () => {
-        setHTML(await codeToHtml(code, { lang: effectiveLanguage, theme }));
+        try {
+          if (!effectiveLanguage || effectiveLanguage === 'plaintext') {
+            // For plaintext, just escape HTML and wrap in pre/code
+            const escapedCode = code
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#39;');
+            setHTML(`<pre class="shiki ${theme}"><code>${escapedCode}</code></pre>`);
+
+            return;
+          }
+
+          const highlighter = await getHighlighterForLanguage(effectiveLanguage as BundledLanguage, [theme]);
+
+          const html = highlighter.codeToHtml(code, {
+            lang: effectiveLanguage,
+            theme,
+          });
+
+          setHTML(html);
+        } catch (error) {
+          logger.error('Failed to highlight code:', error);
+
+          // Fallback to plain text
+          const escapedCode = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          setHTML(`<pre class="shiki ${theme}"><code>${escapedCode}</code></pre>`);
+        }
       };
 
       processCode();

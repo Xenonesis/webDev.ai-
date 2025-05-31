@@ -335,16 +335,14 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         data-chat-visible={showChat}
       >
         <ClientOnly>{() => <Menu />}</ClientOnly>
-        <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
+        <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full modern-scrollbar">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
               <div id="intro" className="mt-[16vh] max-w-chat mx-auto text-center px-4 lg:px-0">
                 <div className="relative">
                   {/* Enhanced hero section with gradient text */}
                   <h1 className="text-3xl lg:text-6xl font-bold mb-4 animate-fade-in">
-                    <span className="dynamic-branding">
-                      webdev.ai
-                    </span>
+                    <span className="dynamic-branding">webdev.ai</span>
                   </h1>
                   <p className="text-lg lg:text-xl text-white/70 mb-8 max-w-2xl mx-auto">
                     Your AI-powered development assistant. Build, debug, and deploy with confidence.
@@ -687,7 +685,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
 
                     handleSendMessage?.(event, messageInput);
                   })}
-
               </div>
             </div>
           </div>

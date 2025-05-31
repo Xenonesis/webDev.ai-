@@ -66,9 +66,14 @@ const getAppResponse = () => {
 
 export const loader: LoaderFunction = async ({ request: _request }) => {
   try {
-    return json(getAppResponse());
+    const appResponse = getAppResponse();
+    console.log('App info loaded successfully');
+
+    return json(appResponse);
   } catch (error) {
     console.error('Failed to get webapp info:', error);
+    console.error('Error details:', error instanceof Error ? error.stack : error);
+
     return json(
       {
         name: 'bolt.diy',
