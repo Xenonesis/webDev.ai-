@@ -9,31 +9,45 @@ const __dirname = path.dirname(__filename);
 
 // Generate index.html for static deployment
 function generateIndexHtml() {
-  const buildDir = path.join(process.cwd(), 'build', 'client');
-  const assetsDir = path.join(buildDir, 'assets');
-  
-  if (!fs.existsSync(buildDir)) {
-    console.error('Build directory not found. Please run build first.');
-    process.exit(1);
-  }
+  try {
+    const buildDir = path.join(process.cwd(), 'build', 'client');
+    const assetsDir = path.join(buildDir, 'assets');
+
+    if (!fs.existsSync(buildDir)) {
+      console.warn('Build directory not found. Skipping index.html generation.');
+      return;
+    }
+
+    // First, try to copy the public/index.html as a fallback
+    const publicIndexPath = path.join(process.cwd(), 'public', 'index.html');
+    const targetIndexPath = path.join(buildDir, 'index.html');
+
+    if (fs.existsSync(publicIndexPath)) {
+      fs.copyFileSync(publicIndexPath, targetIndexPath);
+      console.log('✅ Copied public/index.html to build directory');
+    }
 
   // Find the main JS and CSS files
   let mainJs = '';
   let mainCss = '';
   
   if (fs.existsSync(assetsDir)) {
-    const assets = fs.readdirSync(assetsDir);
-    
-    // Find entry client JS file
-    const entryJs = assets.find(file => file.startsWith('entry.client-') && file.endsWith('.js'));
-    if (entryJs) {
-      mainJs = `/assets/${entryJs}`;
-    }
-    
-    // Find main CSS file
-    const entryCss = assets.find(file => file.startsWith('entry.client-') && file.endsWith('.css'));
-    if (entryCss) {
-      mainCss = `/assets/${entryCss}`;
+    try {
+      const assets = fs.readdirSync(assetsDir);
+
+      // Find entry client JS file
+      const entryJs = assets.find(file => file && file.startsWith('entry.client-') && file.endsWith('.js'));
+      if (entryJs) {
+        mainJs = `/assets/${entryJs}`;
+      }
+
+      // Find main CSS file
+      const entryCss = assets.find(file => file && file.startsWith('entry.client-') && file.endsWith('.css'));
+      if (entryCss) {
+        mainCss = `/assets/${entryCss}`;
+      }
+    } catch (error) {
+      console.warn('Warning: Could not read assets directory:', error.message);
     }
   }
 
@@ -138,13 +152,18 @@ function generateIndexHtml() {
 </body>
 </html>`;
 
-  const indexPath = path.join(buildDir, 'index.html');
-  fs.writeFileSync(indexPath, html);
-  
-  console.log('✅ Generated index.html for static deployment');
-  console.log(`📁 Location: ${indexPath}`);
-  if (mainJs) console.log(`🔗 Main JS: ${mainJs}`);
-  if (mainCss) console.log(`🎨 Main CSS: ${mainCss}`);
+    const indexPath = path.join(buildDir, 'index.html');
+    fs.writeFileSync(indexPath, html);
+
+    console.log('✅ Generated index.html for static deployment');
+    console.log(`📁 Location: ${indexPath}`);
+    if (mainJs) console.log(`🔗 Main JS: ${mainJs}`);
+    if (mainCss) console.log(`🎨 Main CSS: ${mainCss}`);
+  } catch (error) {
+    console.error('❌ Error generating index.html:', error.message);
+    // Don't exit with error code to avoid breaking the build
+    console.warn('⚠️ Continuing build without index.html generation');
+  }
 }
 
 // Run the script

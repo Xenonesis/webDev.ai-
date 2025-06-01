@@ -1,5 +1,5 @@
 [build]
-  command = "npm install --legacy-peer-deps && npm run build:netlify"
+  command = "npm install && npm run build"
   publish = "build/client"
 
 [build.environment]

@@ -26,7 +26,7 @@
   <meta property="twitter:image" content="/social_preview_index.png">
   
   <!-- Preload critical resources -->
-  <link rel="preload" href="/assets/entry.client.js" as="script">
+  <!-- Assets will be dynamically loaded -->
   
   <!-- UnoCSS Reset -->
   <style>
@@ -93,14 +93,52 @@
     // Fallback error handling
     window.addEventListener('error', (e) => {
       console.error('Application error:', e.error);
-      document.querySelector('.loading-text').textContent = 'Error loading application. Please refresh the page.';
+      const loadingText = document.querySelector('.loading-text');
+      if (loadingText) {
+        loadingText.textContent = 'Error loading application. Please refresh the page.';
+      }
     });
-    
-    // Import the main application
-    import('/assets/entry.client.js').catch(err => {
-      console.error('Failed to load application:', err);
-      document.querySelector('.loading-text').textContent = 'Failed to load application. Please check your connection and refresh.';
-    });
+
+    // Dynamically find and load the entry client script
+    async function loadApp() {
+      try {
+        // Try to fetch the manifest to find the correct entry file
+        const manifestResponse = await fetch('/.vite/manifest.json');
+        if (manifestResponse.ok) {
+          const manifest = await manifestResponse.json();
+          const entryFile = manifest['app/entry.client.tsx']?.file;
+          if (entryFile) {
+            await import(`/${entryFile}`);
+            return;
+          }
+        }
+      } catch (err) {
+        console.warn('Could not load from manifest, trying fallback');
+      }
+
+      // Fallback: try common entry file patterns
+      const fallbacks = [
+        '/assets/entry.client.js',
+        '/assets/entry.client-*.js'
+      ];
+
+      for (const fallback of fallbacks) {
+        try {
+          await import(fallback);
+          return;
+        } catch (err) {
+          console.warn(`Failed to load ${fallback}:`, err);
+        }
+      }
+
+      // If all fails, show error
+      const loadingText = document.querySelector('.loading-text');
+      if (loadingText) {
+        loadingText.textContent = 'Failed to load application. Please check your connection and refresh.';
+      }
+    }
+
+    loadApp();
   </script>
 </body>
 </html>
