@@ -606,7 +606,7 @@ For compliance questions, contact [WebContainer licensing](https://webcontainers
 [![GitHub stars](https://img.shields.io/github/stars/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/Xenonesis/webDev.ai-?style=social)](https://github.com/Xenonesis/webDev.ai-/network/members)
 
-**Made with ❤️ by [Aditya](https://github.com/Xenonesis) and the webdev.ai community**
+**Made with ❤️ by [Aditya](https://github.com/Xenonesis) and the webdev community**
 
 [🚀 Get Started](https://github.com/Xenonesis/webDev.ai-) • [📖 Documentation](./docs/) • [🐛 Report Bug](https://github.com/Xenonesis/webDev.ai-/issues) • [💡 Request Feature](https://github.com/Xenonesis/webDev.ai-/issues)
 
