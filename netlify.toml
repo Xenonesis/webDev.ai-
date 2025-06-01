@@ -1,5 +1,5 @@
 [build]
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run build"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run build:netlify"
   publish = "build/client"
 
 [build.environment]

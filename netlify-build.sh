@@ -17,15 +17,15 @@ echo "📦 Installing dependencies..."
 pnpm install --frozen-lockfile --silent
 
 # Verify critical dependencies
-echo "🔍 Verifying Remix installation..."
-if ! pnpm exec remix --version > /dev/null 2>&1; then
-    echo "❌ Remix CLI not found, installing @remix-run/dev..."
-    pnpm add @remix-run/dev --save-dev --silent
+echo "🔍 Verifying Vite installation..."
+if ! pnpm exec vite --version > /dev/null 2>&1; then
+    echo "❌ Vite not found, installing vite..."
+    pnpm add vite --save-dev --silent
 fi
 
 # Build the application
 echo "🏗️ Building application..."
-pnpm run build
+pnpm run build:netlify
 
 # Verify build output
 echo "✅ Verifying build output..."
