@@ -1,12 +1,13 @@
 [build]
   base = "."
-  command = "pnpm install && pnpm run build"
+  command = "pnpm install --prod=false && pnpm run build"
   publish = "build/client"
 
 [build.environment]
   NODE_VERSION = "18.18.0"
   NPM_FLAGS = "--version"
   PNPM_VERSION = "8.15.6"
+  CI = "true"
 
 [[redirects]]
   from = "/*"
