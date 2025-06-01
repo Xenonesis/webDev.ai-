@@ -1,12 +1,22 @@
 [build]
-  command = "chmod +x build.sh && ./build.sh"
+  command = "npm install --legacy-peer-deps && npm run build:netlify"
   publish = "build/client"
 
 [build.environment]
   NODE_VERSION = "18.18.0"
   NPM_VERSION = "10.2.4"
-  NODE_ENV = "development"
+  NODE_ENV = "production"
   NODE_OPTIONS = "--max-old-space-size=4096"
+
+# Netlify Functions for server-side functionality
+[functions]
+  directory = "netlify/functions"
+
+# Handle client-side routing
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
 
 [[redirects]]
   from = "/*"
