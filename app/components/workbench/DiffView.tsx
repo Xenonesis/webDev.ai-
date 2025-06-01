@@ -638,7 +638,7 @@ const InlineDiffComparison = memo(({ beforeCode, afterCode, filename, language }
         />
         <div className={diffPanelStyles}>
           {hasChanges ? (
-            <div className="overflow-x-auto min-w-full">
+            <div className="overflow-x-auto min-w-full horizontal-scrollbar">
               {unifiedBlocks.map((block, index) => (
                 <CodeLine
                   key={`${block.lineNumber}-${index}`}

@@ -144,7 +144,7 @@ export const EditorPanel = memo(
 
             <PanelResizeHandle />
             <Panel className="flex flex-col" defaultSize={80} minSize={20}>
-              <PanelHeader className="overflow-x-auto">
+              <PanelHeader className="overflow-x-auto horizontal-scrollbar">
                 {activeFileSegments?.length && (
                   <div className="flex items-center flex-1 text-sm">
                     <FileBreadcrumb pathSegments={activeFileSegments} files={files} onFileSelect={onFileSelect} />

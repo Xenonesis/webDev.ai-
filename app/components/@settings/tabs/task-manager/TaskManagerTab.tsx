@@ -1298,7 +1298,7 @@ const TaskManagerTab: React.FC = () => {
                 </div>
               )}
 
-              <div className="overflow-x-auto">
+              <div className="overflow-x-auto horizontal-scrollbar">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="text-bolt-elements-textSecondary border-b border-bolt-elements-border">
