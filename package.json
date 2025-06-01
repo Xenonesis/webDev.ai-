@@ -205,13 +205,6 @@
   "resolutions": {
     "@typescript-eslint/utils": "^8.0.0-alpha.30"
   },
-  "overrides": {
-    "@remix-run/react": "^2.15.2",
-    "@remix-run/dev": "^2.15.2",
-    "@remix-run/cloudflare": "^2.15.2",
-    "@remix-run/cloudflare-pages": "^2.15.2",
-    "@remix-run/node": "^2.15.2",
-    "@remix-run/serve": "^2.15.2"
-  },
+
   "packageManager": "pnpm@9.4.0"
 }
