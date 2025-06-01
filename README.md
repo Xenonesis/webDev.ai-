@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![webdev.ai: AI-Powered Full-Stack Web Development in the Browser](./public/social_preview_index.jpg)](https://webdev.ai)
+[![webdev.ai: AI-Powered Full-Stack Web Development in the Browser](./public/social_preview_index.png)](https://webdev.ai)
 
 **🚀 AI-Powered Web Development Assistant**
 
@@ -19,7 +19,7 @@
 
 ## 🌟 Overview
 
-Welcome to **webdev.ai**, a revolutionary AI-powered web development assistant that transforms how you build web applications! This cutting-edge platform leverages multiple Large Language Models (LLMs) to provide intelligent coding assistance, debugging support, and deployment capabilities - all within your browser.
+Welcome to **webdev**, a revolutionary AI-powered web development assistant that transforms how you build web applications! This cutting-edge platform leverages multiple Large Language Models (LLMs) to provide intelligent coding assistance, debugging support, and deployment capabilities - all within your browser.
 
 ### 🎯 Key Highlights
 
