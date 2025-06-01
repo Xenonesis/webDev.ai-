@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci && npm run build"
+  command = "npm install --production=false && npm run build"
   publish = "build/client"
 
 [build.environment]
