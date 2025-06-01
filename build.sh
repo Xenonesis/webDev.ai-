@@ -14,7 +14,7 @@ npm cache clean --force
 
 # Install dependencies
 echo "Installing dependencies..."
-npm install --no-package-lock
+npm install --no-package-lock --legacy-peer-deps
 
 # Check if dependencies installed correctly
 echo "Checking node_modules..."
