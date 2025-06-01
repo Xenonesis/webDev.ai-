@@ -129,7 +129,7 @@ function Content({ children, ...props }: StickToBottomContentProps) {
   const context = useStickToBottomContext();
 
   return (
-    <div ref={context.scrollRef} className="w-full h-auto">
+    <div ref={context.scrollRef} className="w-full h-auto chat-scrollbar">
       <div {...props} ref={context.contentRef}>
         {typeof children === 'function' ? children(context) : children}
       </div>
