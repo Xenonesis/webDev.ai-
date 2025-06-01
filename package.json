@@ -12,10 +12,10 @@
   },
   "scripts": {
     "deploy": "npm run build && wrangler pages deploy",
-    "build": "remix vite:build && node scripts/generate-index.js",
-    "build:netlify": "remix vite:build && node scripts/generate-index.js",
+    "build": "npx remix vite:build && node scripts/generate-index.js",
+    "build:netlify": "npx remix vite:build && node scripts/generate-index.js",
     "postbuild": "node scripts/generate-index.js",
-    "dev": "node pre-start.cjs  && remix vite:dev",
+    "dev": "node pre-start.cjs  && npx remix vite:dev",
     "test": "vitest --run",
     "test:watch": "vitest",
     "lint": "eslint --cache --cache-location ./node_modules/.cache/eslint app",
