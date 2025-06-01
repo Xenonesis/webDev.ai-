@@ -5,7 +5,7 @@
 
 set -e  # Exit on any error
 
-echo "🚀 Starting Netlify build for webdev.ai v0.45.0-beta"
+echo "🚀 Starting Netlify build for webdev.ai v0.45.2-fixed"
 
 # Check Node.js version and enable pnpm
 echo "📋 Node.js version: $(node --version)"
