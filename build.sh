@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit on any error
 
 # Netlify build script for webdev.ai
 echo "Starting webdev.ai build process..."
@@ -15,8 +16,17 @@ npm cache clean --force
 echo "Installing dependencies..."
 npm install --no-package-lock
 
+# Check if dependencies installed correctly
+echo "Checking node_modules..."
+ls -la node_modules/ | head -10
+
 # Build the application
 echo "Building application..."
 npm run build
+
+# Check if build directory was created
+echo "Checking build output..."
+ls -la build/
+ls -la build/client/
 
 echo "Build completed successfully!"
