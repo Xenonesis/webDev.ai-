@@ -1,5 +1,8 @@
+# Alternative Netlify configuration using custom build script
+# Use this if the main netlify.toml doesn't work
+
 [build]
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run build"
+  command = "./netlify-build.sh"
   publish = "build/client"
 
 [build.environment]

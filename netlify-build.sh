@@ -5,26 +5,27 @@
 
 set -e  # Exit on any error
 
-echo "🚀 Starting Netlify build for webdev.ai v0.35.0-beta"
+echo "🚀 Starting Netlify build for webdev.ai v0.45.0-beta"
 
-# Check Node.js version
+# Check Node.js version and enable pnpm
 echo "📋 Node.js version: $(node --version)"
-echo "📋 npm version: $(npm --version)"
+corepack enable
+echo "📋 pnpm version: $(pnpm --version)"
 
-# Clean install with modern npm flags
+# Clean install with pnpm
 echo "📦 Installing dependencies..."
-npm install --omit=optional --silent
+pnpm install --frozen-lockfile --silent
 
 # Verify critical dependencies
 echo "🔍 Verifying Remix installation..."
-if ! npx remix --version > /dev/null 2>&1; then
+if ! pnpm exec remix --version > /dev/null 2>&1; then
     echo "❌ Remix CLI not found, installing @remix-run/dev..."
-    npm install @remix-run/dev --save-dev --silent
+    pnpm add @remix-run/dev --save-dev --silent
 fi
 
 # Build the application
 echo "🏗️ Building application..."
-npm run build
+pnpm run build
 
 # Verify build output
 echo "✅ Verifying build output..."

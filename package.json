@@ -5,7 +5,7 @@
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
-  "version": "0.35.0-beta",
+  "version": "0.45.0-beta",
   "author": {
     "name": "webdev team",
     "email": "maintainers@webdev.ai"
