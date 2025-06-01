@@ -1,5 +1,5 @@
 [build]
-  command = "echo 'Starting build process...' && npm --version && node --version && echo 'Installing dependencies...' && npm install --production=false && echo 'Dependencies installed successfully' && echo 'Starting build...' && npm run build && echo 'Build completed successfully'"
+  command = "npm install --production=false && npm run build"
   publish = "build/client"
 
 [build.environment]
