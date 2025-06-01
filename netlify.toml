@@ -6,6 +6,7 @@
   NODE_VERSION = "18.18.0"
   NPM_VERSION = "10.2.4"
   NODE_ENV = "development"
+  NODE_OPTIONS = "--max-old-space-size=4096"
 
 [[redirects]]
   from = "/*"

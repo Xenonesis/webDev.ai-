@@ -20,9 +20,9 @@ npm install --no-package-lock --legacy-peer-deps
 echo "Checking node_modules..."
 ls -la node_modules/ | head -10
 
-# Build the application
+# Build the application with increased memory
 echo "Building application..."
-npm run build
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 # Check if build directory was created
 echo "Checking build output..."
