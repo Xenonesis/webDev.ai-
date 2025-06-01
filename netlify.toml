@@ -1,6 +1,6 @@
 [build]
   base = "."
-  command = "pnpm install --prod=false && pnpm run build"
+  command = "pnpm install --include=dev && pnpm run build"
   publish = "build/client"
 
 [build.environment]

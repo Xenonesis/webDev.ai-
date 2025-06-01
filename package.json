@@ -28,7 +28,7 @@
     "typecheck": "tsc",
     "typegen": "wrangler types",
     "preview": "pnpm run build && pnpm run start",
-    "prepare": "is-ci || husky",
+    "postinstall": "node -e \"try { require('husky').install() } catch (e) { if (e.code !== 'MODULE_NOT_FOUND') throw e }\"",
     "clean": "node scripts/clean.js",
     "electron:build:deps": "concurrently \"pnpm electron:build:main\" \"pnpm electron:build:preload\" --kill-others-on-fail",
     "electron:build:main": "vite build --config ./electron/main/vite.config.ts",
