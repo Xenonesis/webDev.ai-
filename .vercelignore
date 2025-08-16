@@ -1,0 +1,5 @@
+wrangler.toml
+.wrangler/
+cloudflare-functions/
+worker-configuration.d.ts
+bindings.sh

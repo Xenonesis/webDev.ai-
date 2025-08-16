@@ -1,0 +1,21 @@
+{
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "build/client",
+  "installCommand": "pnpm install",
+  "framework": null,
+  "functions": {
+    "app/routes/api.*.ts": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}

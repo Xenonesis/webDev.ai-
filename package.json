@@ -14,6 +14,7 @@
     "deploy": "npm run build && wrangler pages deploy",
     "build": "vite build && node scripts/generate-index.js",
     "build:netlify": "vite build --config vite.config.netlify.ts && node scripts/generate-index.js",
+    "build:vercel": "vite build --config vite.config.vercel.ts && node scripts/generate-index.js",
     "postbuild": "node scripts/generate-index.js",
     "dev": "node pre-start.cjs && vite dev",
     "test": "vitest --run",
@@ -90,8 +91,7 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.4",
-    "@remix-run/cloudflare": "^2.15.2",
-    "@remix-run/cloudflare-pages": "^2.15.2",
+
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
     "@tanstack/react-virtual": "^3.13.0",
@@ -157,7 +157,7 @@
   },
   "devDependencies": {
     "@blitz/eslint-plugin": "0.1.0",
-    "@cloudflare/workers-types": "^4.20241127.0",
+
     "@electron/notarize": "^2.5.0",
     "@iconify-json/ph": "^1.2.1",
     "@iconify/types": "^2.0.0",
@@ -199,11 +199,17 @@
     "vite-plugin-copy": "^0.1.6",
     "vite-plugin-optimize-css-modules": "^1.1.0",
     "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.1.7",
-    "wrangler": "^4.5.1"
+    "vitest": "^2.1.7"
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.0.0-alpha.30"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "workerd": "*"
+      }
+    }
   },
 
   "packageManager": "pnpm@9.4.0"
