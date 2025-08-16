@@ -96,7 +96,7 @@ If you are getting this, you are probably on Windows. The fix is generally to up
 
 ### **"Miniflare or Wrangler errors in Windows"**
 
-You will need to make sure you have the latest version of Visual Studio C++ installed (14.40.33816), more information here https://github.com/stackblitz-labs/bolt.diy/issues/19.
+You will need to make sure you have the latest version of Visual Studio C++ installed (14.40.33816), more information here https://github.com/Xenonesis/webDev.ai-/issues/19.
 
 </details>
 

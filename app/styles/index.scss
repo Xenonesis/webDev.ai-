@@ -148,7 +148,47 @@ body {
   &::-webkit-scrollbar:horizontal {
     height: 10px;
   }
+}
 
+// Custom scrollable container for chat messages
+.chat-messages-scrollable {
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.4) rgba(255, 255, 255, 0.1);
+
+  // Always show scrollbar
+  &::-webkit-scrollbar {
+    width: 16px;
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    min-height: 40px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: rgba(255, 255, 255, 0.7);
+  }
+
+  // Ensure scrollbar is always visible
+  scrollbar-gutter: stable;
+}
+
+.chat-scrollbar {
   &::-webkit-scrollbar-thumb:horizontal {
     background-color: var(--modern-scrollbar-thumb-background);
     border-radius: 5px;

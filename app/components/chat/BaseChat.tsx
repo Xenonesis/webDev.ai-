@@ -29,7 +29,7 @@ import type { ActionRunner } from '~/lib/runtime/action-runner';
 import { SupabaseChatAlert } from '~/components/chat/SupabaseAlert';
 import { expoUrlAtom } from '~/lib/stores/qrCodeStore';
 import { useStore } from '@nanostores/react';
-import { StickToBottom, useStickToBottomContext } from '~/lib/hooks';
+// Removed StickToBottom import as we're using a simpler scrolling approach
 import { ChatBox } from './ChatBox';
 
 const TEXTAREA_MIN_HEIGHT = 76;
@@ -325,11 +325,11 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const baseChat = (
       <div
         ref={ref}
-        className={classNames(styles.BaseChat, 'relative flex h-full w-full overflow-hidden')}
+        className={classNames(styles.BaseChat, 'relative flex h-full w-full')}
         data-chat-visible={showChat}
       >
         <ClientOnly>{() => <Menu />}</ClientOnly>
-        <div className="flex flex-col lg:flex-row overflow-y-auto w-full h-full">
+        <div className="flex flex-col lg:flex-row w-full h-full">
           <div className={classNames(styles.Chat, 'flex flex-col flex-grow lg:min-w-[var(--chat-min-width)] h-full')}>
             {!chatStarted && (
               <div id="intro" className="mt-[16vh] max-w-chat mx-auto text-center px-4 lg:px-0">
@@ -341,19 +341,25 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                 </p>
               </div>
             )}
-            <StickToBottom
-              className={classNames('pt-6 px-2 sm:px-6 relative', {
-                'h-full flex flex-col': chatStarted,
-              })}
-              resize="smooth"
-              initial="smooth"
-            >
-              <StickToBottom.Content className="flex flex-col gap-4">
+            <div className={classNames('pt-6 px-2 sm:px-6 relative', {
+              'h-full flex flex-col': chatStarted,
+            })}>
+              <div
+                className={classNames('flex flex-col gap-4', {
+                  'flex-1 chat-messages-scrollable': chatStarted,
+                })}
+                style={chatStarted ? {
+                  height: 'calc(100vh - 300px)',
+                  maxHeight: 'calc(100vh - 300px)',
+                  overflowY: 'scroll',
+                  overflowX: 'hidden',
+                  paddingRight: '4px',
+                } : {}}>
                 <ClientOnly>
                   {() => {
                     return chatStarted ? (
                       <Messages
-                        className="flex flex-col w-full flex-1 max-w-chat pb-6 mx-auto z-1"
+                        className="flex flex-col w-full max-w-chat pb-6 mx-auto z-1"
                         messages={messages}
                         isStreaming={isStreaming}
                         append={append}
@@ -365,10 +371,10 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     ) : null;
                   }}
                 </ClientOnly>
-              </StickToBottom.Content>
+              </div>
               <div
-                className={classNames('my-auto flex flex-col gap-2 w-full max-w-chat mx-auto z-prompt mb-6', {
-                  'sticky bottom-2': chatStarted,
+                className={classNames('flex flex-col gap-2 w-full max-w-chat mx-auto z-prompt mb-6', {
+                  'mt-auto': chatStarted,
                 })}
               >
                 <div className="flex flex-col gap-2">
@@ -403,7 +409,6 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                     />
                   )}
                 </div>
-                <ScrollToBottom />
                 {progressAnnotations && <ProgressCompilation data={progressAnnotations} />}
                 <ChatBox
                   isModelSettingsCollapsed={isModelSettingsCollapsed}
@@ -444,7 +449,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   setChatMode={setChatMode}
                 />
               </div>
-            </StickToBottom>
+            </div>
             <div className="flex flex-col justify-center">
               {!chatStarted && (
                 <div className="flex justify-center gap-2">
@@ -483,18 +488,4 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
   },
 );
 
-function ScrollToBottom() {
-  const { isAtBottom, scrollToBottom } = useStickToBottomContext();
-
-  return (
-    !isAtBottom && (
-      <button
-        className="absolute z-50 top-[0%] translate-y-[-100%] text-4xl rounded-lg left-[50%] translate-x-[-50%] px-1.5 py-0.5 flex items-center gap-2 bg-bolt-elements-background-depth-3 border border-bolt-elements-borderColor text-bolt-elements-textPrimary text-sm"
-        onClick={() => scrollToBottom()}
-      >
-        Go to last message
-        <span className="i-ph:arrow-down animate-bounce" />
-      </button>
-    )
-  );
-}
+// ScrollToBottom function removed as we're using a simpler scrolling approach
