@@ -1,21 +1,32 @@
 [build]
+  # Enable corepack + install deps with pnpm + run your build
   command = "corepack enable && pnpm install --frozen-lockfile && pnpm run build:netlify"
   publish = "build/client"
 
 [build.environment]
   NODE_VERSION = "18.18.0"
   PNPM_VERSION = "9.4.0"
+  NPM_FLAGS = "--legacy-peer-deps" # helps in case of peer dependency conflicts
 
-# Netlify Functions for server-side functionality
+# Cache dependencies & pnpm store between builds
+[build.cache]
+  paths = [
+    "node_modules",
+    ".pnpm-store",
+    "packages/*/node_modules"
+  ]
+
+# Netlify Functions (serverless)
 [functions]
   directory = "netlify/functions"
 
-# Handle client-side routing
+# Redirect API calls to serverless functions
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
   status = 200
 
+# Handle client-side routing for SPAs (React/Vite/etc.)
 [[redirects]]
   from = "/*"
   to = "/index.html"
