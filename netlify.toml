@@ -4,7 +4,6 @@
 
 [build.environment]
   NODE_VERSION = "18.18.0"
-  NODE_ENV = "production"
   PNPM_VERSION = "9.4.0"
 
 # Netlify Functions for server-side functionality
