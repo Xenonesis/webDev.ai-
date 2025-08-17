@@ -93,6 +93,19 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
+      chunkSizeWarningLimit: 1000,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split large dependencies into separate chunks to reduce memory usage
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-remix': ['@remix-run/react'],
+            'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+            'vendor-codemirror': ['@codemirror/view', '@codemirror/state', '@codemirror/commands'],
+            'vendor-icons': ['@heroicons/react', '@phosphor-icons/react', 'lucide-react'],
+          },
+        },
+      },
     },
     plugins: [
       nodePolyfills({
@@ -118,7 +131,7 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      // Remove Cloudflare-specific plugins for Vercel
+      // SPA mode for Vercel deployment
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,
@@ -126,6 +139,14 @@ export default defineConfig((config) => {
           v3_throwAbortReason: true,
           v3_lazyRouteDiscovery: true,
         },
+        ssr: false,
+        serverModuleFormat: 'esm',
+        ignoredRouteFiles: [
+          '**/api.*.ts',
+          '**/api.*.tsx',
+        ],
+        basename: '/',
+        buildDirectory: 'build',
       }),
       UnoCSS(),
       tsconfigPaths(),
