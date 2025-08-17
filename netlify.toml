@@ -1,12 +1,13 @@
 [build]
   # Enable corepack + install deps with pnpm + run your build
-  command = "corepack enable && pnpm install && pnpm run build:netlify"
+  command = "NODE_OPTIONS=--max_old_space_size=4096 corepack enable && pnpm install && pnpm run build:netlify"
   publish = "build/client"
 
 [build.environment]
   NODE_VERSION = "18.20.4"
   PNPM_VERSION = "9.4.0"
   NPM_FLAGS = "--legacy-peer-deps" # helps in case of peer dependency conflicts
+  NODE_OPTIONS = "--max_old_space_size=4096" # Increase memory limit for build
 
 # Cache dependencies & pnpm store between builds
 [build.cache]

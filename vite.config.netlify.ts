@@ -93,9 +93,17 @@ export default defineConfig((config) => {
     },
     build: {
       target: 'esnext',
+      chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: undefined,
+          manualChunks: {
+            // Split large dependencies into separate chunks to reduce memory usage
+            'vendor-react': ['react', 'react-dom'],
+            'vendor-remix': ['@remix-run/react'],
+            'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+            'vendor-codemirror': ['@codemirror/view', '@codemirror/state', '@codemirror/commands'],
+            'vendor-icons': ['@heroicons/react', '@phosphor-icons/react', 'lucide-react'],
+          },
         },
       },
     },
