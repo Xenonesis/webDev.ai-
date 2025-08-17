@@ -9,7 +9,7 @@ export default function WebContainerConnect() {
     // Load and setup WebContainer connect on the client side
     const setupWebContainer = async () => {
       try {
-        const { setupConnect } = await import('https://cdn.jsdelivr.net/npm/@webcontainer/api@latest/dist/connect.js');
+        const { setupConnect } = await import('@webcontainer/api/connect');
         setupConnect({
           editorOrigin: editorOrigin
         });
