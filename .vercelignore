@@ -3,3 +3,5 @@ wrangler.toml
 cloudflare-functions/
 worker-configuration.d.ts
 bindings.sh
+# Ensure vite config files are not ignored
+!vite.config.vercel.ts
