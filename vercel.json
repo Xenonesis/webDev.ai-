@@ -1,5 +1,5 @@
 {
-  "buildCommand": "vite build --config vite.config.vercel.ts && node scripts/generate-index.js",
+  "buildCommand": "pnpm run build:vercel",
   "outputDirectory": "build/client",
   "installCommand": "pnpm install",
   "framework": null,
