@@ -144,6 +144,8 @@ export default defineConfig((config) => {
           '**/api.*.ts',
           '**/api.*.tsx',
         ],
+        basename: '/',
+        buildDirectory: 'build',
       }),
       UnoCSS(),
       tsconfigPaths(),

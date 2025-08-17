@@ -8,12 +8,11 @@ startTransition(() => {
     throw new Error('Root element not found');
   }
   
-  // Simple environment detection: check if we're in development or production
-  // In development, we use SSR. In production (Netlify), we use SPA mode.
+  // Check if we're in development or production
   const isDevelopment = import.meta.env.DEV;
   
   if (isDevelopment) {
-    // Development mode with SSR - use hydrateRoot
+    // Development mode - use hydrateRoot for SSR
     hydrateRoot(
       root,
       <StrictMode>
@@ -21,7 +20,7 @@ startTransition(() => {
       </StrictMode>
     );
   } else {
-    // Production SPA mode - use createRoot and clear loading content
+    // Production SPA mode - use createRoot
     root.innerHTML = '';
     createRoot(root).render(
       <StrictMode>
