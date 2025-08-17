@@ -242,7 +242,10 @@ async function chatAction({ context, request }: ActionFunctionArgs) {
             const result = await streamText({
               messages,
               env: context.cloudflare?.env,
-              options,
+              options: {
+                supabaseConnection: supabase,
+                toolChoice: 'none',
+              },
               apiKeys,
               files,
               providerSettings,

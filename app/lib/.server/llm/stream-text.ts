@@ -42,7 +42,7 @@ export async function streamText(props: {
   const {
     messages,
     env: serverEnv,
-    options,
+    options = {},
     apiKeys,
     files,
     providerSettings,
@@ -112,7 +112,7 @@ export async function streamText(props: {
 
   const dynamicMaxTokens = modelDetails && modelDetails.maxTokenAllowed ? modelDetails.maxTokenAllowed : MAX_TOKENS;
   logger.info(
-    `Max tokens for model ${modelDetails.name} is ${dynamicMaxTokens} based on ${modelDetails.maxTokenAllowed} or ${MAX_TOKENS}`,
+    `Max tokens for model ${modelDetails?.name || 'unknown'} is ${dynamicMaxTokens} based on ${modelDetails?.maxTokenAllowed || 'N/A'} or ${MAX_TOKENS}`,
   );
 
   let systemPrompt =
@@ -184,13 +184,13 @@ export async function streamText(props: {
     console.log('No locked files found from any source for prompt.');
   }
 
-  logger.info(`Sending llm call to ${provider.name} with model ${modelDetails.name}`);
+  logger.info(`Sending llm call to ${provider.name} with model ${modelDetails?.name || 'unknown'}`);
 
   // console.log(systemPrompt, processedMessages);
 
   return await _streamText({
     model: provider.getModelInstance({
-      model: modelDetails.name,
+      model: modelDetails?.name || DEFAULT_MODEL,
       serverEnv,
       apiKeys,
       providerSettings,
