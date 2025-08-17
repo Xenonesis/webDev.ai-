@@ -5,7 +5,7 @@
   "license": "MIT",
   "sideEffects": false,
   "type": "module",
-  "version": "3.22.0",
+  "version": "3.3.0",
   "author": {
     "name": "webdev team",
     "email": "maintainers@webdev.ai"
@@ -91,13 +91,15 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-tabs": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.4",
-
+    "@remix-run/cloudflare": "^2.17.0",
+    "@remix-run/dev": "^2.15.2",
     "@remix-run/node": "^2.15.2",
     "@remix-run/react": "^2.15.2",
     "@tanstack/react-virtual": "^3.13.0",
     "@types/react-beautiful-dnd": "^13.1.8",
     "@uiw/codemirror-theme-vscode": "^4.23.6",
     "@unocss/reset": "^0.61.9",
+    "@vitejs/plugin-react": "^4.3.4",
     "@webcontainer/api": "1.6.1-internal.1",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-web-links": "^0.11.0",
@@ -149,22 +151,21 @@
     "rollup-plugin-node-polyfills": "^0.2.1",
     "shiki": "^1.24.0",
     "tailwind-merge": "^2.2.1",
-    "unist-util-visit": "^5.0.0",
-    "use-debounce": "^10.0.4",
-    "vite-plugin-node-polyfills": "^0.22.0",
-    "zod": "^3.24.1",
-    "zustand": "^5.0.3",
-    "@remix-run/dev": "^2.15.2",
-    "@vitejs/plugin-react": "^4.3.4",
     "typescript": "^5.7.2",
+    "unist-util-visit": "^5.0.0",
     "unocss": "^0.61.9",
+    "use-debounce": "^10.0.4",
     "vite": "^5.4.11",
     "vite-plugin-copy": "^0.1.6",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "vite-plugin-optimize-css-modules": "^1.1.0",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "zod": "^3.24.1",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@blitz/eslint-plugin": "0.1.0",
+    "@cloudflare/workers-types": "^4.20250816.0",
     "@electron/notarize": "^2.5.0",
     "@iconify-json/ph": "^1.2.1",
     "@iconify/types": "^2.0.0",
@@ -198,7 +199,8 @@
     "sass-embedded": "^1.81.0",
     "stream-browserify": "^3.0.0",
     "unified": "^11.0.5",
-    "vitest": "^2.1.7"
+    "vitest": "^2.1.7",
+    "wrangler": "^4.30.0"
   },
   "resolutions": {
     "@typescript-eslint/utils": "^8.0.0-alpha.30"
@@ -210,6 +212,5 @@
       }
     }
   },
-
   "packageManager": "pnpm@9.4.0"
 }
