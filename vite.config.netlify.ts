@@ -132,6 +132,11 @@ export default defineConfig((config) => {
         },
         ssr: false, // Disable SSR for static generation
         serverModuleFormat: 'esm',
+        ignoredRouteFiles: [
+          // Ignore server-side API routes for SPA mode
+          '**/api.*.ts',
+          '**/api.*.tsx',
+        ],
       }),
       UnoCSS(),
       tsconfigPaths(),

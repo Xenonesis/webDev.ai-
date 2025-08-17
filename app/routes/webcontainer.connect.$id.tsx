@@ -1,32 +1,38 @@
-import { type LoaderFunction } from '@remix-run/cloudflare';
+import { useEffect } from 'react';
+import { useSearchParams } from '@remix-run/react';
 
-export const loader: LoaderFunction = async ({ request }) => {
-  const url = new URL(request.url);
-  const editorOrigin = url.searchParams.get('editorOrigin') || 'https://stackblitz.com';
-  console.log('editorOrigin', editorOrigin);
+export default function WebContainerConnect() {
+  const [searchParams] = useSearchParams();
+  const editorOrigin = searchParams.get('editorOrigin') || 'https://stackblitz.com';
 
-  const htmlContent = `
-    <!DOCTYPE html>
+  useEffect(() => {
+    // Load and setup WebContainer connect on the client side
+    const setupWebContainer = async () => {
+      try {
+        const { setupConnect } = await import('https://cdn.jsdelivr.net/npm/@webcontainer/api@latest/dist/connect.js');
+        setupConnect({
+          editorOrigin: editorOrigin
+        });
+      } catch (error) {
+        console.error('Failed to setup WebContainer connect:', error);
+      }
+    };
+
+    setupWebContainer();
+  }, [editorOrigin]);
+
+  return (
     <html lang="en">
       <head>
-        <meta charset="UTF-8" />
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Connect to WebContainer</title>
       </head>
       <body>
-        <script type="module">
-          (async () => {
-            const { setupConnect } = await import('https://cdn.jsdelivr.net/npm/@webcontainer/api@latest/dist/connect.js');
-            setupConnect({
-              editorOrigin: '${editorOrigin}'
-            });
-          })();
-        </script>
+        <div id="webcontainer-connect">
+          <p>Connecting to WebContainer...</p>
+        </div>
       </body>
     </html>
-  `;
-
-  return new Response(htmlContent, {
-    headers: { 'Content-Type': 'text/html' },
-  });
-};
+  );
+}

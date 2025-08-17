@@ -1,6 +1,6 @@
 [build]
   # Enable corepack + install deps with pnpm + run your build
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm run build:netlify"
+  command = "corepack enable && pnpm install && pnpm run build:netlify"
   publish = "build/client"
 
 [build.environment]

@@ -1,4 +1,4 @@
-import { json, type MetaFunction } from '@remix-run/cloudflare';
+import { type MetaFunction } from '@remix-run/react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { motion } from 'framer-motion';
 import { BaseChat } from '~/components/chat/BaseChat';
@@ -9,8 +9,6 @@ import BackgroundRays from '~/components/ui/BackgroundRays';
 export const meta: MetaFunction = () => {
   return [{ title: 'webdev' }, { name: 'description', content: 'Talk with webdev, an AI assistant for web development' }];
 };
-
-export const loader = () => json({});
 
 /**
  * Landing page component for webdev
