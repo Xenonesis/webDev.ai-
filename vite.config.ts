@@ -119,7 +119,14 @@ export default defineConfig((config) => {
         },
       },
       config.mode !== 'test' && remixCloudflareDevProxy(),
-      remixVitePlugin(),
+      remixVitePlugin({
+        future: {
+          v3_fetcherPersist: true,
+          v3_relativeSplatPath: true,
+          v3_throwAbortReason: true,
+          v3_lazyRouteDiscovery: true,
+        },
+      }),
       UnoCSS(),
       tsconfigPaths(),
       chrome129IssuePlugin(),
