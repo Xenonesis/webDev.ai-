@@ -4,8 +4,8 @@
   publish = "build/client"
 
 [build.environment]
-  NODE_VERSION = "18.18.0"
-  PNPM_VERSION = "9.4.0"
+  NODE_VERSION = "20"
+  PNPM_VERSION = "9.15.9"
   NPM_FLAGS = "--legacy-peer-deps" # helps in case of peer dependency conflicts
 
 # Cache dependencies & pnpm store between builds
