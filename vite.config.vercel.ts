@@ -9,7 +9,10 @@ import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-dotenv.config();
+// Only load dotenv in development, not in Vercel build
+if (process.env.NODE_ENV !== 'production') {
+  dotenv.config();
+}
 
 // Get detailed git info with fallbacks
 const getGitInfo = () => {

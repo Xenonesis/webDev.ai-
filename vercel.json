@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pnpm run build:vercel",
+  "buildCommand": "NODE_ENV=production pnpm run build:vercel",
   "outputDirectory": "build/client",
   "installCommand": "pnpm install",
   "framework": null,
