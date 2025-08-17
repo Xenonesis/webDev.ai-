@@ -138,10 +138,9 @@ export default defineConfig((config) => {
           v3_throwAbortReason: true,
           v3_lazyRouteDiscovery: true,
         },
-        ssr: false, // Disable SSR for static generation
+        ssr: false,
         serverModuleFormat: 'esm',
         ignoredRouteFiles: [
-          // Ignore server-side API routes for SPA mode
           '**/api.*.ts',
           '**/api.*.tsx',
         ],
