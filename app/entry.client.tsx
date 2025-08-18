@@ -1,5 +1,5 @@
 import { RemixBrowser } from '@remix-run/react';
-import { startTransition, StrictMode } from 'react';
+import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // Simple error boundary
@@ -7,23 +7,34 @@ function AppErrorBoundary({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
-// Initialize app
-startTransition(() => {
-  // Ensure minimal Remix context for SPA mode
-  if (!window.__remixContext) {
-    // Create proper routes structure
-    const rootRoute = {
-      id: 'root',
-      path: '',
-      hasAction: false,
-      hasLoader: false,
-      hasClientAction: false,
-      hasClientLoader: false,
-      hasErrorBoundary: false,
-      module: '',
-      imports: [],
-    };
+// Prevent multiple initializations
+let isInitialized = false;
 
+function initializeApp() {
+  // Prevent multiple calls
+  if (isInitialized) {
+    return;
+  }
+
+  isInitialized = true;
+
+  console.log('🚀 Initializing WebDev.ai...');
+
+  // Create proper routes structure
+  const rootRoute = {
+    id: 'root',
+    path: '',
+    hasAction: false,
+    hasLoader: false,
+    hasClientAction: false,
+    hasClientLoader: false,
+    hasErrorBoundary: false,
+    module: '',
+    imports: [],
+  };
+
+  // Set up Remix context only if it doesn't exist
+  if (!window.__remixContext) {
     window.__remixContext = {
       future: {
         v3_fetcherPersist: true,
@@ -53,7 +64,7 @@ startTransition(() => {
     } as any;
   }
 
-  // Ensure __remixManifest and __remixRouteModules also exist
+  // Set up other Remix globals
   if (!window.__remixManifest) {
     window.__remixManifest = (window.__remixContext as any).manifest;
   }
@@ -62,23 +73,43 @@ startTransition(() => {
     window.__remixRouteModules = {};
   }
 
-  // Get or create root element
-  let rootElement = document.getElementById('root');
-  
+  // Get root element
+  const rootElement = document.getElementById('root');
+
   if (!rootElement) {
-    rootElement = document.createElement('div');
-    rootElement.id = 'root';
-    document.body.appendChild(rootElement);
+    console.error('❌ Root element not found');
+    return;
   }
 
-  // Create React root and render
-  const root = createRoot(rootElement);
-  
-  root.render(
-    <StrictMode>
-      <AppErrorBoundary>
-        <RemixBrowser />
-      </AppErrorBoundary>
-    </StrictMode>,
-  );
-});
+  // Clear any existing content to prevent duplication
+  if (rootElement.innerHTML.trim()) {
+    console.log('🧹 Clearing existing content');
+    rootElement.innerHTML = '';
+  }
+
+  try {
+    console.log('✅ Creating React root');
+
+    const root = createRoot(rootElement);
+    
+    root.render(
+      <StrictMode>
+        <AppErrorBoundary>
+          <RemixBrowser />
+        </AppErrorBoundary>
+      </StrictMode>,
+    );
+
+    console.log('🎉 WebDev.ai initialized successfully');
+  } catch (error) {
+    console.error('❌ Failed to initialize:', error);
+  }
+}
+
+// Wait for DOM to be ready, then initialize once
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  // DOM is already ready
+  initializeApp();
+}
