@@ -146,8 +146,8 @@ startTransition(() => {
   
   // Always ensure the context is properly set on window for RemixBrowser
   window.__remixContext = remixContext;
-  
-  // Additional safety check - ensure routes object exists
+
+  // Additional safety check - ensure routes object exists (Fixed routing error)
   if (!window.__remixContext?.routes) {
     console.warn('Routes not found in context, using default route structure');
     window.__remixContext = window.__remixContext || {};
@@ -165,7 +165,7 @@ startTransition(() => {
       },
     };
   }
-  
+
   // Check if we're in development or production
   const isDevelopment = import.meta.env.DEV;
   
