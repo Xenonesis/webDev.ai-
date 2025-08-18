@@ -1,310 +1,58 @@
 import { RemixBrowser } from '@remix-run/react';
-import { startTransition, StrictMode, useEffect } from 'react';
-import { createRoot, hydrateRoot } from 'react-dom/client';
+import { startTransition, StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
-// Extend window interface for Remix context
-declare global {
-  interface Window {
-    __remixContext: any;
-  }
-}
-
-// Add error boundary for the entire app
+// Simple error boundary
 function AppErrorBoundary({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    const handleError = (event: ErrorEvent) => {
-      console.error('Unhandled error:', event.error);
-    };
-    
-    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      console.error('Unhandled promise rejection:', event.reason);
-    };
-    
-    window.addEventListener('error', handleError);
-    window.addEventListener('unhandledrejection', handleUnhandledRejection);
-    
-    return () => {
-      window.removeEventListener('error', handleError);
-      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
-    };
-  }, []);
-  
   return <>{children}</>;
 }
 
-// Create a default Remix context for SPA mode
-function createDefaultRemixContext() {
-  return {
-    future: {
-      v3_fetcherPersist: true,
-      v3_relativeSplatPath: true,
-      v3_throwAbortReason: true,
-      v3_singleFetch: false,
-      v3_lazyRouteDiscovery: false,
-    },
-    isSpaMode: true,
-    basename: '',
-    routes: {
-      root: {
-        id: 'root',
-        path: '',
-        hasAction: false,
-        hasLoader: false,
-        hasClientAction: false,
-        hasClientLoader: false,
-        hasErrorBoundary: false,
-        module: '',
-        imports: [],
-      },
-    },
-    manifest: {
-      routes: {
-        root: {
-          id: 'root',
-          path: '',
-          hasAction: false,
-          hasLoader: false,
-          hasClientAction: false,
-          hasClientLoader: false,
-          hasErrorBoundary: false,
-          module: '',
-          imports: [],
-        },
-      },
-      entry: { imports: [], module: '' },
-      url: '',
-      version: '1',
-    },
-    url: window.location.pathname + window.location.search,
-    state: {
-      loaderData: {},
-      actionData: null,
-      errors: null,
-    },
-  };
-}
-
-// Safely access window.__remixContext with proper fallbacks
-function getRemixContext() {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-  
-  const context = window.__remixContext;
-  
-  // For SPA mode, we might not have a context from the server
-  if (!context) {
-    return createDefaultRemixContext();
-  }
-  
-  // Ensure future object exists with default values
-  if (!context.future) {
-    context.future = {
-      v3_fetcherPersist: true,
-      v3_relativeSplatPath: true,
-      v3_throwAbortReason: true,
-      v3_singleFetch: false,
-      v3_lazyRouteDiscovery: false,
-    };
-  }
-  
-  // Ensure other required properties exist
-  if (context.isSpaMode === undefined) {
-    context.isSpaMode = true;
-  }
-
-  if (context.basename === undefined) {
-    context.basename = '';
-  }
-
-  if (!context.routes) {
-    context.routes = {};
-  }
-
-  if (!context.manifest) {
-    context.manifest = {
-      routes: {},
-      entry: { imports: [], module: '' },
-      url: '',
-      version: '1',
-    };
-  }
-  
-  return context;
-}
-
+// Initialize app
 startTransition(() => {
-  const root = document.getElementById('root');
-
-  if (!root) {
-    console.error('Root element not found');
-    return;
-  }
-  
-  // Get initial context from window or create default
-  let remixContext = getRemixContext();
-  
-  // If context is null (server-side rendering scenario), create a default one
-  if (!remixContext) {
-    console.warn('No Remix context found, creating default SPA context');
-    remixContext = createDefaultRemixContext();
-  }
-  
-  // Ensure ALL required properties are present and valid
-  remixContext = {
-    ...remixContext,
-    future: remixContext.future || {
-      v3_fetcherPersist: true,
-      v3_relativeSplatPath: true,
-      v3_throwAbortReason: true,
-      v3_singleFetch: false,
-      v3_lazyRouteDiscovery: false,
-    },
-    isSpaMode: remixContext.isSpaMode !== false, // Default to true
-    basename: remixContext.basename || '',
-    routes: remixContext.routes || {
-      root: {
-        id: 'root',
-        path: '',
-        hasAction: false,
-        hasLoader: false,
-        hasClientAction: false,
-        hasClientLoader: false,
-        hasErrorBoundary: false,
-        module: '',
-        imports: [],
+  // Ensure minimal Remix context for SPA mode
+  if (!window.__remixContext) {
+    window.__remixContext = {
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_singleFetch: false,
+        v3_lazyRouteDiscovery: false,
       },
-    },
-    manifest: remixContext.manifest || {
-      routes: {
-        root: {
-          id: 'root',
-          path: '',
-          hasAction: false,
-          hasLoader: false,
-          hasClientAction: false,
-          hasClientLoader: false,
-          hasErrorBoundary: false,
-          module: '',
-          imports: [],
-        },
+      isSpaMode: true,
+      basename: '',
+      routes: {},
+      manifest: {
+        routes: {},
+        entry: { imports: [], module: '' },
+        url: '',
+        version: '1',
       },
-      entry: { imports: [], module: '' },
-      url: '',
-      version: '1',
-    },
-    url: remixContext.url || window.location.pathname + window.location.search,
-    state: remixContext.state || {
-      loaderData: {},
-      actionData: null,
-      errors: null,
-    },
-  };
-  
-  // Set the context on window AFTER ensuring it's fully populated
-  window.__remixContext = remixContext;
-  
-  // Ensure __remixManifest exists for RemixBrowser
-  if (!window.__remixManifest) {
-    console.warn('Creating default __remixManifest');
-    window.__remixManifest = {
-      routes: {
-        root: {
-          id: 'root',
-          path: '',
-          module: '/app/root.tsx',
-          imports: [],
-          hasAction: false,
-          hasLoader: false,
-          hasClientAction: false,
-          hasClientLoader: false,
-          hasErrorBoundary: false,
-        },
+      url: window.location.pathname + window.location.search,
+      state: {
+        loaderData: {},
+        actionData: null,
+        errors: null,
       },
-      entry: {
-        imports: [],
-        module: '/app/entry.client.tsx',
-      },
-      url: '',
-      version: '1',
     } as any;
   }
+
+  // Get or create root element
+  let rootElement = document.getElementById('root');
   
-  // Ensure __remixRouteModules exists
-  if (!window.__remixRouteModules) {
-    console.warn('Creating default __remixRouteModules');
-    window.__remixRouteModules = {};
-  }
-  
-  // Double-check that routes exist (this should never fail now, but just in case)
-  if (!window.__remixContext.routes) {
-    console.error('CRITICAL: Routes still missing after initialization, forcing default structure');
-    window.__remixContext.routes = {
-      root: {
-        id: 'root',
-        path: '',
-        hasAction: false,
-        hasLoader: false,
-        hasClientAction: false,
-        hasClientLoader: false,
-        hasErrorBoundary: false,
-        module: '',
-        imports: [],
-      },
-    };
+  if (!rootElement) {
+    rootElement = document.createElement('div');
+    rootElement.id = 'root';
+    document.body.appendChild(rootElement);
   }
 
-  // Check if we're in development or production
-  const isDevelopment = import.meta.env.DEV;
+  // Create React root and render
+  const root = createRoot(rootElement);
   
-  try {
-    // For production deployment, always use SPA mode
-    const isProductionDeployment =
-      !isDevelopment ||
-      window.location.hostname.includes('vercel.app') ||
-      window.location.hostname.includes('vercel.com') ||
-      window.location.hostname.includes('netlify.app');
-
-    if (isDevelopment && !isProductionDeployment && remixContext && !remixContext.isSpaMode) {
-      // Development mode with SSR - use hydrateRoot
-      hydrateRoot(
-        root,
-        <StrictMode>
-          <AppErrorBoundary>
-            <RemixBrowser />
-          </AppErrorBoundary>
-        </StrictMode>,
-      );
-    } else {
-      // SPA mode - clear any existing content and use createRoot
-      root.innerHTML = '';
-      createRoot(root).render(
-        <StrictMode>
-          <AppErrorBoundary>
-            <RemixBrowser />
-          </AppErrorBoundary>
-        </StrictMode>,
-      );
-    }
-  } catch (error) {
-    console.error('Error during React initialization:', error);
-
-    // Fallback to basic rendering
-    try {
-      root.innerHTML = '';
-
-      const fallbackRoot = createRoot(root);
-      fallbackRoot.render(
-        <AppErrorBoundary>
-          <RemixBrowser />
-        </AppErrorBoundary>,
-      );
-    } catch (fallbackError) {
-      console.error('Fatal error during fallback rendering:', fallbackError);
-
-      // Last resort - show error message
-      root.innerHTML =
-        '<div style="padding: 20px; color: red;"><h1>Application Error</h1><p>Failed to initialize the application. Please try refreshing the page.</p></div>';
-    }
-  }
+  root.render(
+    <StrictMode>
+      <AppErrorBoundary>
+        <RemixBrowser />
+      </AppErrorBoundary>
+    </StrictMode>,
+  );
 });
