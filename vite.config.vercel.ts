@@ -1,213 +1,37 @@
-import { cloudflareDevProxyVitePlugin as remixCloudflareDevProxy, vitePlugin as remixVitePlugin } from '@remix-run/dev';
+import { vitePlugin as remixVitePlugin } from '@remix-run/dev';
 import UnoCSS from 'unocss/vite';
-import { defineConfig, type ViteDevServer } from 'vite';
+import { defineConfig } from 'vite';
 import { nodePolyfills } from 'vite-plugin-node-polyfills';
-import { optimizeCssModules } from 'vite-plugin-optimize-css-modules';
 import tsconfigPaths from 'vite-tsconfig-paths';
-import * as dotenv from 'dotenv';
-import { execSync } from 'child_process';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
-console.log('Loading vite.config.vercel.ts');
-dotenv.config();
-
-// Debug information
-console.log('Current working directory:', process.cwd());
-console.log('Environment variables:', {
-  NODE_ENV: process.env.NODE_ENV,
-  VERCEL: process.env.VERCEL,
-  CI: process.env.CI,
-});
-
-// Vercel-specific configuration
-const isVercel = !!process.env.VERCEL;
-
-// Get detailed git info with fallbacks
-const getGitInfo = () => {
-  try {
-    // Only try to get git info in development
-    if (process.env.NODE_ENV !== 'production') {
-      return {
-        commitHash: execSync('git rev-parse --short HEAD', { timeout: 1000 }).toString().trim(),
-        branch: execSync('git rev-parse --abbrev-ref HEAD', { timeout: 1000 }).toString().trim(),
-        commitTime: execSync('git log -1 --format=%cd', { timeout: 1000 }).toString().trim(),
-        author: execSync('git log -1 --format=%an', { timeout: 1000 }).toString().trim(),
-        email: execSync('git log -1 --format=%ae', { timeout: 1000 }).toString().trim(),
-        remoteUrl: execSync('git config --get remote.origin.url', { timeout: 1000 }).toString().trim(),
-        repoName: execSync('git config --get remote.origin.url', { timeout: 1000 })
-          .toString()
-          .trim()
-          .replace(/^.*github.com[:/]/, '')
-          .replace(/\.git$/, ''),
-      };
-    }
-  } catch (error) {
-    console.warn('Could not get git info:', error.message);
-  }
-  
-  return {
-    commitHash: 'no-git-info',
-    branch: 'unknown',
-    commitTime: 'unknown',
-    author: 'unknown',
-    email: 'unknown',
-    remoteUrl: 'unknown',
-    repoName: 'unknown',
-  };
+// Ensure we have a valid Remix configuration
+const remixConfig = {
+  future: {
+    v3_fetcherPersist: true,
+    v3_relativeSplatPath: true,
+    v3_throwAbortReason: true,
+  },
 };
 
-// Read package.json with detailed dependency info
-const getPackageJson = () => {
-  try {
-    const pkgPath = join(process.cwd(), 'package.json');
-    const pkgContent = readFileSync(pkgPath, 'utf-8');
-    const pkg = JSON.parse(pkgContent);
-
-    return {
-      name: pkg.name,
-      description: pkg.description,
-      license: pkg.license,
-      dependencies: pkg.dependencies || {},
-      devDependencies: pkg.devDependencies || {},
-      peerDependencies: pkg.peerDependencies || {},
-      optionalDependencies: pkg.optionalDependencies || {},
-    };
-  } catch (error) {
-    console.warn('Could not read package.json:', error.message);
-    return {
-      name: 'bolt.diy',
-      description: 'A DIY LLM interface',
-      license: 'MIT',
-      dependencies: {},
-      devDependencies: {},
-      peerDependencies: {},
-      optionalDependencies: {},
-    };
-  }
-};
-
-const pkg = getPackageJson();
-const gitInfo = getGitInfo();
-
-export default defineConfig((config) => {
-  const isVercel = !!process.env.VERCEL;
-  
-  return {
-    ssr: {
-      noExternal: isVercel ? undefined : true,
-    },
-    define: {
-      __COMMIT_HASH: JSON.stringify(gitInfo.commitHash),
-      __GIT_BRANCH: JSON.stringify(gitInfo.branch),
-      __GIT_COMMIT_TIME: JSON.stringify(gitInfo.commitTime),
-      __GIT_AUTHOR: JSON.stringify(gitInfo.author),
-      __GIT_EMAIL: JSON.stringify(gitInfo.email),
-      __GIT_REMOTE_URL: JSON.stringify(gitInfo.remoteUrl),
-      __GIT_REPO_NAME: JSON.stringify(gitInfo.repoName),
-      __APP_VERSION: JSON.stringify(process.env.npm_package_version),
-      __PKG_NAME: JSON.stringify(pkg.name),
-      __PKG_DESCRIPTION: JSON.stringify(pkg.description),
-      __PKG_LICENSE: JSON.stringify(pkg.license),
-      __PKG_DEPENDENCIES: JSON.stringify(pkg.dependencies),
-      __PKG_DEV_DEPENDENCIES: JSON.stringify(pkg.devDependencies),
-      __PKG_PEER_DEPENDENCIES: JSON.stringify(pkg.peerDependencies),
-      __PKG_OPTIONAL_DEPENDENCIES: JSON.stringify(pkg.optionalDependencies),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.VERCEL': JSON.stringify(process.env.VERCEL),
-    },
-    build: {
-      target: 'esnext',
-      // Vercel specific optimizations
-      minify: isVercel ? 'esbuild' : false,
-      sourcemap: !isVercel,
-      rollupOptions: {
-        output: {
-          manualChunks: isVercel ? undefined : {
-            vendor: ['react', 'react-dom'],
-            ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip'],
-            editor: ['@codemirror/view', '@codemirror/state', '@codemirror/language'],
-          },
-        },
+export default defineConfig({
+  plugins: [
+    nodePolyfills({
+      include: ['buffer', 'process', 'util', 'stream'],
+      globals: {
+        Buffer: true,
+        process: true,
+        global: true,
       },
-    },
-    plugins: [
-      nodePolyfills({
-        include: ['buffer', 'process', 'util', 'stream'],
-        globals: {
-          Buffer: true,
-          process: true,
-          global: true,
-        },
-        protocolImports: true,
-        exclude: ['child_process', 'fs', 'path'],
-      }),
-      {
-        name: 'buffer-polyfill',
-        transform(code, id) {
-          if (id.includes('env.mjs')) {
-            return {
-              code: `import { Buffer } from 'buffer';
-${code}`,
-              map: null,
-            };
-          }
-
-          return null;
-        },
-      },
-      !isVercel && config.mode !== 'test' && remixCloudflareDevProxy(),
-      remixVitePlugin({
-        future: {
-          v3_fetcherPersist: true,
-          v3_relativeSplatPath: true,
-          v3_throwAbortReason: true,
-        },
-      }),
-      UnoCSS(),
-      tsconfigPaths(),
-      !isVercel && chrome129IssuePlugin(),
-      config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
-    ],
-    envPrefix: [
-      'VITE_',
-      'OPENAI_LIKE_API_BASE_URL',
-      'OLLAMA_API_BASE_URL',
-      'LMSTUDIO_API_BASE_URL',
-      'TOGETHER_API_BASE_URL',
-    ],
-    css: {
-      preprocessorOptions: {
-        scss: {
-          api: 'modern-compiler',
-        },
-      },
-    },
-  };
+      protocolImports: true,
+      exclude: ['child_process', 'fs', 'path'],
+    }),
+    remixVitePlugin(remixConfig),
+    UnoCSS(),
+    tsconfigPaths(),
+  ],
+  build: {
+    target: 'esnext',
+    minify: 'esbuild',
+    sourcemap: true,
+  },
 });
-
-function chrome129IssuePlugin() {
-  return {
-    name: 'chrome129IssuePlugin',
-    configureServer(server: ViteDevServer) {
-      server.middlewares.use((req, res, next) => {
-        const raw = req.headers['user-agent']?.match(/Chrom(e|ium)\/([0-9]+)\./);
-
-        if (raw) {
-          const version = parseInt(raw[2], 10);
-
-          if (version === 129) {
-            res.setHeader('content-type', 'text/html');
-            res.end(
-              '<body><h1>Please use Chrome Canary for testing.</h1><p>Chrome 129 has an issue with JavaScript modules & Vite local development, see <a href="https://github.com/stackblitz/bolt.new/issues/86#issuecomment-2395519258">for more information.</a></p><p><b>Note:</b> This only impacts <u>local development</u>. `pnpm run build` and `pnpm run start` will work fine in this browser.</p></body>',
-            );
-
-            return;
-          }
-        }
-
-        next();
-      });
-    },
-  };
-}

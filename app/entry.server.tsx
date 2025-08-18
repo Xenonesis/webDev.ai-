@@ -27,10 +27,16 @@ export default async function handleRequest(
     start(controller) {
       const head = renderHeadToString({ request, remixContext, Head });
 
+      // Serialize the remixContext for client-side use
+      const serializedRemixContext = JSON.stringify(remixContext).replace(/</g, '\\u003c');
+      
+      // Inject the remixContext into the window object
+      const remixContextScript = `<script>window.__remixContext = ${serializedRemixContext};</script>`;
+
       controller.enqueue(
         new Uint8Array(
           new TextEncoder().encode(
-            `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${head}</head><body><div id="root" class="w-full h-full">`,
+            `<!DOCTYPE html><html lang="en" data-theme="${themeStore.value}"><head>${head}${remixContextScript}</head><body><div id="root" class="w-full h-full">`,
           ),
         ),
       );

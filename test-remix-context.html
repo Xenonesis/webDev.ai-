@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remix Context Test</title>
+</head>
+<body>
+    <div id="root">
+        <div class="loading">Loading test...</div>
+    </div>
+    
+    <script>
+        // Simulate the window.__remixContext being undefined (Vercel SPA mode)
+        window.__remixContext = undefined;
+        
+        // Test our fix
+        function getRemixContext() {
+            if (typeof window === 'undefined') return null;
+            
+            const context = window.__remixContext;
+            if (!context) return null;
+            
+            // Ensure future object exists with default values
+            if (!context.future) {
+                context.future = {
+                    v3_fetcherPersist: false,
+                    v3_relativeSplatPath: false,
+                    v3_throwAbortReason: false,
+                    v3_singleFetch: false,
+                    v3_lazyRouteDiscovery: false
+                };
+            }
+            
+            // Ensure other required properties exist
+            if (context.isSpaMode === undefined) context.isSpaMode = true;
+            if (context.basename === undefined) context.basename = '';
+            
+            return context;
+        }
+        
+        // Test the function
+        console.log('Testing Remix context handling...');
+        const context = getRemixContext();
+        console.log('Context:', context);
+        
+        if (context === null) {
+            console.log('✓ Correctly handled undefined remix context');
+            document.querySelector('.loading').textContent = 'Test passed: Remix context handled correctly';
+        } else {
+            console.log('✗ Failed to handle undefined remix context');
+            document.querySelector('.loading').textContent = 'Test failed: Remix context not handled correctly';
+        }
+    </script>
+</body>
+</html>

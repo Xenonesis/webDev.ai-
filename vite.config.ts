@@ -71,6 +71,15 @@ const getPackageJson = () => {
 const pkg = getPackageJson();
 const gitInfo = getGitInfo();
 
+// Ensure we have a valid Remix configuration
+const remixConfig = {
+  future: {
+    v3_fetcherPersist: true,
+    v3_relativeSplatPath: true,
+    v3_throwAbortReason: true,
+  },
+};
+
 export default defineConfig((config) => {
   return {
     define: {
@@ -119,13 +128,7 @@ export default defineConfig((config) => {
         },
       },
       config.mode !== 'test' && remixCloudflareDevProxy(),
-      remixVitePlugin({
-        future: {
-          v3_fetcherPersist: true,
-          v3_relativeSplatPath: true,
-          v3_throwAbortReason: true,
-        },
-      }),
+      remixVitePlugin(remixConfig),
       UnoCSS(),
       tsconfigPaths(),
       chrome129IssuePlugin(),
