@@ -11,6 +11,19 @@ function AppErrorBoundary({ children }: { children: React.ReactNode }) {
 startTransition(() => {
   // Ensure minimal Remix context for SPA mode
   if (!window.__remixContext) {
+    // Create proper routes structure
+    const rootRoute = {
+      id: 'root',
+      path: '',
+      hasAction: false,
+      hasLoader: false,
+      hasClientAction: false,
+      hasClientLoader: false,
+      hasErrorBoundary: false,
+      module: '',
+      imports: [],
+    };
+
     window.__remixContext = {
       future: {
         v3_fetcherPersist: true,
@@ -20,9 +33,13 @@ startTransition(() => {
       },
       isSpaMode: true,
       basename: '',
-      routes: {},
+      routes: {
+        root: rootRoute,
+      },
       manifest: {
-        routes: {},
+        routes: {
+          root: rootRoute,
+        },
         entry: { imports: [], module: '' },
         url: '',
         version: '1',
@@ -34,6 +51,15 @@ startTransition(() => {
         errors: null,
       },
     } as any;
+  }
+
+  // Ensure __remixManifest and __remixRouteModules also exist
+  if (!window.__remixManifest) {
+    window.__remixManifest = (window.__remixContext as any).manifest;
+  }
+  
+  if (!window.__remixRouteModules) {
+    window.__remixRouteModules = {};
   }
 
   // Get or create root element
