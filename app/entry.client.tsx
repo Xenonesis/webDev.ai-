@@ -2,6 +2,13 @@ import { RemixBrowser } from '@remix-run/react';
 import { startTransition, StrictMode, useEffect } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
+// Extend window interface for Remix context
+declare global {
+  interface Window {
+    __remixContext: any;
+  }
+}
+
 // Add error boundary for the entire app
 function AppErrorBoundary({ children }: { children: React.ReactNode }) {
   useEffect(() => {
@@ -25,32 +32,67 @@ function AppErrorBoundary({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+// Create a default Remix context for SPA mode
+function createDefaultRemixContext() {
+  return {
+    future: {
+      v3_fetcherPersist: true,
+      v3_relativeSplatPath: true,
+      v3_throwAbortReason: true,
+      v3_singleFetch: false,
+      v3_lazyRouteDiscovery: false
+    },
+    isSpaMode: true,
+    basename: '',
+    routes: {
+      root: {
+        id: 'root',
+        path: '',
+        hasAction: false,
+        hasLoader: false,
+        hasClientAction: false,
+        hasClientLoader: false,
+        hasErrorBoundary: false,
+        module: '',
+        imports: []
+      }
+    },
+    manifest: {
+      routes: {
+        root: {
+          id: 'root',
+          path: '',
+          hasAction: false,
+          hasLoader: false,
+          hasClientAction: false,
+          hasClientLoader: false,
+          hasErrorBoundary: false,
+          module: '',
+          imports: []
+        }
+      },
+      entry: { imports: [], module: '' },
+      url: '',
+      version: '1'
+    },
+    url: window.location.pathname + window.location.search,
+    state: {
+      loaderData: {},
+      actionData: null,
+      errors: null
+    }
+  };
+}
+
 // Safely access window.__remixContext with proper fallbacks
 function getRemixContext() {
   if (typeof window === 'undefined') return null;
   
-  const context = (window as any).__remixContext;
+  const context = window.__remixContext;
   
   // For SPA mode, we might not have a context from the server
   if (!context) {
-    return {
-      future: {
-        v3_fetcherPersist: true,
-        v3_relativeSplatPath: true,
-        v3_throwAbortReason: true,
-        v3_singleFetch: false,
-        v3_lazyRouteDiscovery: false
-      },
-      isSpaMode: true,
-      basename: '',
-      routes: {},
-      manifest: {
-        routes: {},
-        entry: { imports: [], module: '' },
-        url: '',
-        version: ''
-      }
-    };
+    return createDefaultRemixContext();
   }
   
   // Ensure future object exists with default values
@@ -67,6 +109,8 @@ function getRemixContext() {
   // Ensure other required properties exist
   if (context.isSpaMode === undefined) context.isSpaMode = true;
   if (context.basename === undefined) context.basename = '';
+  if (!context.routes) context.routes = {};
+  if (!context.manifest) context.manifest = { routes: {}, entry: { imports: [], module: '' }, url: '', version: '1' };
   
   return context;
 }
@@ -78,8 +122,13 @@ startTransition(() => {
     return;
   }
   
-  // Initialize Remix context
+  // Initialize Remix context and ensure it's available globally
   const remixContext = getRemixContext();
+  
+  // Ensure the context is available on window for RemixBrowser
+  if (!window.__remixContext) {
+    window.__remixContext = remixContext;
+  }
   
   // Check if we're in development or production
   const isDevelopment = import.meta.env.DEV;
