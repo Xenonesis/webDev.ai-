@@ -30,14 +30,35 @@ function getRemixContext() {
   if (typeof window === 'undefined') return null;
   
   const context = (window as any).__remixContext;
-  if (!context) return null;
+  
+  // For SPA mode, we might not have a context from the server
+  if (!context) {
+    return {
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
+        v3_singleFetch: false,
+        v3_lazyRouteDiscovery: false
+      },
+      isSpaMode: true,
+      basename: '',
+      routes: {},
+      manifest: {
+        routes: {},
+        entry: { imports: [], module: '' },
+        url: '',
+        version: ''
+      }
+    };
+  }
   
   // Ensure future object exists with default values
   if (!context.future) {
     context.future = {
-      v3_fetcherPersist: false,
-      v3_relativeSplatPath: false,
-      v3_throwAbortReason: false,
+      v3_fetcherPersist: true,
+      v3_relativeSplatPath: true,
+      v3_throwAbortReason: true,
       v3_singleFetch: false,
       v3_lazyRouteDiscovery: false
     };
@@ -57,14 +78,20 @@ startTransition(() => {
     return;
   }
   
-  // Initialize Remix context if it doesn't exist
+  // Initialize Remix context
   const remixContext = getRemixContext();
   
   // Check if we're in development or production
   const isDevelopment = import.meta.env.DEV;
   
   try {
-    if (isDevelopment && remixContext) {
+    // For production deployment, always use SPA mode
+    const isProductionDeployment = !isDevelopment || 
+                                  window.location.hostname.includes('vercel.app') || 
+                                  window.location.hostname.includes('vercel.com') ||
+                                  window.location.hostname.includes('netlify.app');
+    
+    if (isDevelopment && !isProductionDeployment && remixContext && !remixContext.isSpaMode) {
       // Development mode with SSR - use hydrateRoot
       hydrateRoot(
         root,
@@ -75,28 +102,15 @@ startTransition(() => {
         </StrictMode>
       );
     } else {
-      // Production SPA mode - check if we have existing content to hydrate
-      if (remixContext && root.innerHTML.trim() && !remixContext.isSpaMode) {
-        // Content exists and we're not in SPA mode, attempt hydration
-        hydrateRoot(
-          root,
-          <StrictMode>
-            <AppErrorBoundary>
-              <RemixBrowser />
-            </AppErrorBoundary>
-          </StrictMode>
-        );
-      } else {
-        // SPA mode or no content, use createRoot
-        root.innerHTML = '';
-        createRoot(root).render(
-          <StrictMode>
-            <AppErrorBoundary>
-              <RemixBrowser />
-            </AppErrorBoundary>
-          </StrictMode>
-        );
-      }
+      // SPA mode - clear any existing content and use createRoot
+      root.innerHTML = '';
+      createRoot(root).render(
+        <StrictMode>
+          <AppErrorBoundary>
+            <RemixBrowser />
+          </AppErrorBoundary>
+        </StrictMode>
+      );
     }
   } catch (error) {
     console.error('Error during React initialization:', error);
