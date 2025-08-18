@@ -141,17 +141,105 @@ startTransition(() => {
     return;
   }
   
-  // Initialize Remix context and ensure it's available globally
-  const remixContext = getRemixContext();
+  // Get initial context from window or create default
+  let remixContext = getRemixContext();
   
-  // Always ensure the context is properly set on window for RemixBrowser
+  // If context is null (server-side rendering scenario), create a default one
+  if (!remixContext) {
+    console.warn('No Remix context found, creating default SPA context');
+    remixContext = createDefaultRemixContext();
+  }
+  
+  // Ensure ALL required properties are present and valid
+  remixContext = {
+    ...remixContext,
+    future: remixContext.future || {
+      v3_fetcherPersist: true,
+      v3_relativeSplatPath: true,
+      v3_throwAbortReason: true,
+      v3_singleFetch: false,
+      v3_lazyRouteDiscovery: false,
+    },
+    isSpaMode: remixContext.isSpaMode !== false, // Default to true
+    basename: remixContext.basename || '',
+    routes: remixContext.routes || {
+      root: {
+        id: 'root',
+        path: '',
+        hasAction: false,
+        hasLoader: false,
+        hasClientAction: false,
+        hasClientLoader: false,
+        hasErrorBoundary: false,
+        module: '',
+        imports: [],
+      },
+    },
+    manifest: remixContext.manifest || {
+      routes: {
+        root: {
+          id: 'root',
+          path: '',
+          hasAction: false,
+          hasLoader: false,
+          hasClientAction: false,
+          hasClientLoader: false,
+          hasErrorBoundary: false,
+          module: '',
+          imports: [],
+        },
+      },
+      entry: { imports: [], module: '' },
+      url: '',
+      version: '1',
+    },
+    url: remixContext.url || window.location.pathname + window.location.search,
+    state: remixContext.state || {
+      loaderData: {},
+      actionData: null,
+      errors: null,
+    },
+  };
+  
+  // Set the context on window AFTER ensuring it's fully populated
   window.__remixContext = remixContext;
-
-  // Additional safety check - ensure routes object exists (Fixed routing error)
-  if (!window.__remixContext?.routes) {
-    console.warn('Routes not found in context, using default route structure');
-    window.__remixContext = window.__remixContext || {};
-    window.__remixContext.routes = window.__remixContext.routes || {
+  
+  // Ensure __remixManifest exists for RemixBrowser
+  if (!window.__remixManifest) {
+    console.warn('Creating default __remixManifest');
+    window.__remixManifest = {
+      routes: {
+        root: {
+          id: 'root',
+          path: '',
+          module: '/app/root.tsx',
+          imports: [],
+          hasAction: false,
+          hasLoader: false,
+          hasClientAction: false,
+          hasClientLoader: false,
+          hasErrorBoundary: false,
+        },
+      },
+      entry: {
+        imports: [],
+        module: '/app/entry.client.tsx',
+      },
+      url: '',
+      version: '1',
+    } as any;
+  }
+  
+  // Ensure __remixRouteModules exists
+  if (!window.__remixRouteModules) {
+    console.warn('Creating default __remixRouteModules');
+    window.__remixRouteModules = {};
+  }
+  
+  // Double-check that routes exist (this should never fail now, but just in case)
+  if (!window.__remixContext.routes) {
+    console.error('CRITICAL: Routes still missing after initialization, forcing default structure');
+    window.__remixContext.routes = {
       root: {
         id: 'root',
         path: '',
