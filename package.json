@@ -14,7 +14,7 @@
     "deploy": "npm run build && wrangler pages deploy",
     "build": "vite build && node scripts/generate-index.js",
     "build:netlify": "vite build --config vite.config.netlify.ts && node scripts/generate-index.js",
-    "build:vercel": "vite build --config vite.config.vercel.ts && node scripts/generate-index.js",
+    "build:vercel": "echo \"Building with vite.config.vercel.ts\" && vite build --config vite.config.vercel.ts && node scripts/generate-index.js",
     "postbuild": "node scripts/generate-index.js",
     "dev": "node pre-start.cjs && vite dev",
     "test": "vitest --run",
@@ -215,5 +215,5 @@
       }
     }
   },
-  "packageManager": "pnpm@9.4.0"
+  "packageManager": "pnpm@9.15.9"
 }

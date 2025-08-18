@@ -9,45 +9,60 @@ import { execSync } from 'child_process';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
-// Only load dotenv in development, not in Vercel build
-if (process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
+console.log('Loading vite.config.vercel.ts');
+dotenv.config();
+
+// Debug information
+console.log('Current working directory:', process.cwd());
+console.log('Environment variables:', {
+  NODE_ENV: process.env.NODE_ENV,
+  VERCEL: process.env.VERCEL,
+  CI: process.env.CI,
+});
+
+// Vercel-specific configuration
+const isVercel = !!process.env.VERCEL;
 
 // Get detailed git info with fallbacks
 const getGitInfo = () => {
   try {
-    return {
-      commitHash: execSync('git rev-parse --short HEAD').toString().trim(),
-      branch: execSync('git rev-parse --abbrev-ref HEAD').toString().trim(),
-      commitTime: execSync('git log -1 --format=%cd').toString().trim(),
-      author: execSync('git log -1 --format=%an').toString().trim(),
-      email: execSync('git log -1 --format=%ae').toString().trim(),
-      remoteUrl: execSync('git config --get remote.origin.url').toString().trim(),
-      repoName: execSync('git config --get remote.origin.url')
-        .toString()
-        .trim()
-        .replace(/^.*github.com[:/]/, '')
-        .replace(/\.git$/, ''),
-    };
-  } catch {
-    return {
-      commitHash: 'no-git-info',
-      branch: 'unknown',
-      commitTime: 'unknown',
-      author: 'unknown',
-      email: 'unknown',
-      remoteUrl: 'unknown',
-      repoName: 'unknown',
-    };
+    // Only try to get git info in development
+    if (process.env.NODE_ENV !== 'production') {
+      return {
+        commitHash: execSync('git rev-parse --short HEAD', { timeout: 1000 }).toString().trim(),
+        branch: execSync('git rev-parse --abbrev-ref HEAD', { timeout: 1000 }).toString().trim(),
+        commitTime: execSync('git log -1 --format=%cd', { timeout: 1000 }).toString().trim(),
+        author: execSync('git log -1 --format=%an', { timeout: 1000 }).toString().trim(),
+        email: execSync('git log -1 --format=%ae', { timeout: 1000 }).toString().trim(),
+        remoteUrl: execSync('git config --get remote.origin.url', { timeout: 1000 }).toString().trim(),
+        repoName: execSync('git config --get remote.origin.url', { timeout: 1000 })
+          .toString()
+          .trim()
+          .replace(/^.*github.com[:/]/, '')
+          .replace(/\.git$/, ''),
+      };
+    }
+  } catch (error) {
+    console.warn('Could not get git info:', error.message);
   }
+  
+  return {
+    commitHash: 'no-git-info',
+    branch: 'unknown',
+    commitTime: 'unknown',
+    author: 'unknown',
+    email: 'unknown',
+    remoteUrl: 'unknown',
+    repoName: 'unknown',
+  };
 };
 
 // Read package.json with detailed dependency info
 const getPackageJson = () => {
   try {
     const pkgPath = join(process.cwd(), 'package.json');
-    const pkg = JSON.parse(readFileSync(pkgPath, 'utf-8'));
+    const pkgContent = readFileSync(pkgPath, 'utf-8');
+    const pkg = JSON.parse(pkgContent);
 
     return {
       name: pkg.name,
@@ -58,7 +73,8 @@ const getPackageJson = () => {
       peerDependencies: pkg.peerDependencies || {},
       optionalDependencies: pkg.optionalDependencies || {},
     };
-  } catch {
+  } catch (error) {
+    console.warn('Could not read package.json:', error.message);
     return {
       name: 'bolt.diy',
       description: 'A DIY LLM interface',
@@ -75,7 +91,12 @@ const pkg = getPackageJson();
 const gitInfo = getGitInfo();
 
 export default defineConfig((config) => {
+  const isVercel = !!process.env.VERCEL;
+  
   return {
+    ssr: {
+      noExternal: isVercel ? undefined : true,
+    },
     define: {
       __COMMIT_HASH: JSON.stringify(gitInfo.commitHash),
       __GIT_BRANCH: JSON.stringify(gitInfo.branch),
@@ -93,15 +114,16 @@ export default defineConfig((config) => {
       __PKG_PEER_DEPENDENCIES: JSON.stringify(pkg.peerDependencies),
       __PKG_OPTIONAL_DEPENDENCIES: JSON.stringify(pkg.optionalDependencies),
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.VERCEL': JSON.stringify(process.env.VERCEL),
     },
     build: {
       target: 'esnext',
       // Vercel specific optimizations
-      minify: 'esbuild',
-      sourcemap: false,
+      minify: isVercel ? 'esbuild' : false,
+      sourcemap: !isVercel,
       rollupOptions: {
         output: {
-          manualChunks: {
+          manualChunks: isVercel ? undefined : {
             vendor: ['react', 'react-dom'],
             ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tooltip'],
             editor: ['@codemirror/view', '@codemirror/state', '@codemirror/language'],
@@ -125,7 +147,8 @@ export default defineConfig((config) => {
         transform(code, id) {
           if (id.includes('env.mjs')) {
             return {
-              code: `import { Buffer } from 'buffer';\n${code}`,
+              code: `import { Buffer } from 'buffer';
+${code}`,
               map: null,
             };
           }
@@ -133,7 +156,7 @@ export default defineConfig((config) => {
           return null;
         },
       },
-      config.mode !== 'test' && remixCloudflareDevProxy(),
+      !isVercel && config.mode !== 'test' && remixCloudflareDevProxy(),
       remixVitePlugin({
         future: {
           v3_fetcherPersist: true,
@@ -143,7 +166,7 @@ export default defineConfig((config) => {
       }),
       UnoCSS(),
       tsconfigPaths(),
-      chrome129IssuePlugin(),
+      !isVercel && chrome129IssuePlugin(),
       config.mode === 'production' && optimizeCssModules({ apply: 'build' }),
     ],
     envPrefix: [
