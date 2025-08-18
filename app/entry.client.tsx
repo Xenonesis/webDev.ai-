@@ -40,7 +40,7 @@ function createDefaultRemixContext() {
       v3_relativeSplatPath: true,
       v3_throwAbortReason: true,
       v3_singleFetch: false,
-      v3_lazyRouteDiscovery: false
+      v3_lazyRouteDiscovery: false,
     },
     isSpaMode: true,
     basename: '',
@@ -54,8 +54,8 @@ function createDefaultRemixContext() {
         hasClientLoader: false,
         hasErrorBoundary: false,
         module: '',
-        imports: []
-      }
+        imports: [],
+      },
     },
     manifest: {
       routes: {
@@ -68,25 +68,27 @@ function createDefaultRemixContext() {
           hasClientLoader: false,
           hasErrorBoundary: false,
           module: '',
-          imports: []
-        }
+          imports: [],
+        },
       },
       entry: { imports: [], module: '' },
       url: '',
-      version: '1'
+      version: '1',
     },
     url: window.location.pathname + window.location.search,
     state: {
       loaderData: {},
       actionData: null,
-      errors: null
-    }
+      errors: null,
+    },
   };
 }
 
 // Safely access window.__remixContext with proper fallbacks
 function getRemixContext() {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === 'undefined') {
+    return null;
+  }
   
   const context = window.__remixContext;
   
@@ -102,21 +104,38 @@ function getRemixContext() {
       v3_relativeSplatPath: true,
       v3_throwAbortReason: true,
       v3_singleFetch: false,
-      v3_lazyRouteDiscovery: false
+      v3_lazyRouteDiscovery: false,
     };
   }
   
   // Ensure other required properties exist
-  if (context.isSpaMode === undefined) context.isSpaMode = true;
-  if (context.basename === undefined) context.basename = '';
-  if (!context.routes) context.routes = {};
-  if (!context.manifest) context.manifest = { routes: {}, entry: { imports: [], module: '' }, url: '', version: '1' };
+  if (context.isSpaMode === undefined) {
+    context.isSpaMode = true;
+  }
+
+  if (context.basename === undefined) {
+    context.basename = '';
+  }
+
+  if (!context.routes) {
+    context.routes = {};
+  }
+
+  if (!context.manifest) {
+    context.manifest = {
+      routes: {},
+      entry: { imports: [], module: '' },
+      url: '',
+      version: '1',
+    };
+  }
   
   return context;
 }
 
 startTransition(() => {
   const root = document.getElementById('root');
+
   if (!root) {
     console.error('Root element not found');
     return;
@@ -125,9 +144,26 @@ startTransition(() => {
   // Initialize Remix context and ensure it's available globally
   const remixContext = getRemixContext();
   
-  // Ensure the context is available on window for RemixBrowser
-  if (!window.__remixContext) {
-    window.__remixContext = remixContext;
+  // Always ensure the context is properly set on window for RemixBrowser
+  window.__remixContext = remixContext;
+  
+  // Additional safety check - ensure routes object exists
+  if (!window.__remixContext?.routes) {
+    console.warn('Routes not found in context, using default route structure');
+    window.__remixContext = window.__remixContext || {};
+    window.__remixContext.routes = window.__remixContext.routes || {
+      root: {
+        id: 'root',
+        path: '',
+        hasAction: false,
+        hasLoader: false,
+        hasClientAction: false,
+        hasClientLoader: false,
+        hasErrorBoundary: false,
+        module: '',
+        imports: [],
+      },
+    };
   }
   
   // Check if we're in development or production
@@ -135,11 +171,12 @@ startTransition(() => {
   
   try {
     // For production deployment, always use SPA mode
-    const isProductionDeployment = !isDevelopment || 
-                                  window.location.hostname.includes('vercel.app') || 
-                                  window.location.hostname.includes('vercel.com') ||
-                                  window.location.hostname.includes('netlify.app');
-    
+    const isProductionDeployment =
+      !isDevelopment ||
+      window.location.hostname.includes('vercel.app') ||
+      window.location.hostname.includes('vercel.com') ||
+      window.location.hostname.includes('netlify.app');
+
     if (isDevelopment && !isProductionDeployment && remixContext && !remixContext.isSpaMode) {
       // Development mode with SSR - use hydrateRoot
       hydrateRoot(
@@ -148,7 +185,7 @@ startTransition(() => {
           <AppErrorBoundary>
             <RemixBrowser />
           </AppErrorBoundary>
-        </StrictMode>
+        </StrictMode>,
       );
     } else {
       // SPA mode - clear any existing content and use createRoot
@@ -158,24 +195,28 @@ startTransition(() => {
           <AppErrorBoundary>
             <RemixBrowser />
           </AppErrorBoundary>
-        </StrictMode>
+        </StrictMode>,
       );
     }
   } catch (error) {
     console.error('Error during React initialization:', error);
+
     // Fallback to basic rendering
     try {
       root.innerHTML = '';
+
       const fallbackRoot = createRoot(root);
       fallbackRoot.render(
         <AppErrorBoundary>
           <RemixBrowser />
-        </AppErrorBoundary>
+        </AppErrorBoundary>,
       );
     } catch (fallbackError) {
       console.error('Fatal error during fallback rendering:', fallbackError);
+
       // Last resort - show error message
-      root.innerHTML = '<div style="padding: 20px; color: red;"><h1>Application Error</h1><p>Failed to initialize the application. Please try refreshing the page.</p></div>';
+      root.innerHTML =
+        '<div style="padding: 20px; color: red;"><h1>Application Error</h1><p>Failed to initialize the application. Please try refreshing the page.</p></div>';
     }
   }
 });
